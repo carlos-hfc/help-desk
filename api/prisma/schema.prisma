@@ -6,3 +6,98 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum UserRole {
+  ADMIN
+  TECHNICIAN
+  CLIENT
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      UserRole
+  image     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  technicianAvailabilities TechnicianAvailability[]
+  clientCalls              Call[]                   @relation("clientCalls")
+  technicianCalls          Call[]                   @relation("technicianCalls")
+
+  @@map("users")
+}
+
+model TechnicianAvailability {
+  id        String   @id @default(uuid())
+  hour      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  technician   User   @relation(fields: [technicianId], references: [id])
+  technicianId String
+
+  @@index([technicianId])
+  @@map("technicianAvailabilities")
+}
+
+model Service {
+  id        String    @id @default(uuid())
+  name      String
+  price     Decimal   @default(0)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  callServices CallService[]
+
+  @@map("services")
+}
+
+enum CallStatus {
+  OPEN
+  IN_PROGRESS
+  CLOSED
+}
+
+model Call {
+  id          String     @id @default(uuid())
+  title       String?
+  description String?
+  status      CallStatus @default(OPEN)
+  totalValue  Decimal    @default(0)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  client   User   @relation("clientCalls", fields: [clientId], references: [id])
+  clientId String
+
+  technician   User   @relation("technicianCalls", fields: [technicianId], references: [id])
+  technicianId String
+
+  callServices CallService[]
+
+  @@map("calls")
+}
+
+enum CreatedBy {
+  CLIENT
+  TECHNICIAN
+}
+
+model CallService {
+  id        String    @id @default(uuid())
+  createdBy CreatedBy
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  call   Call   @relation(fields: [callId], references: [id])
+  callId String
+
+  service   Service @relation(fields: [serviceId], references: [id])
+  serviceId String
+
+  @@map("callServices")
+}
