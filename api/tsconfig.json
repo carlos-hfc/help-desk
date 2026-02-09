@@ -23,5 +23,9 @@
         "./src/*"
       ]
     },
+    "types": [
+      "vitest/globals",
+      "node"
+    ]
   }
 }
