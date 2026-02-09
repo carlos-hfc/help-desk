@@ -1,6 +1,7 @@
 services:
   db:
-    image: bitnami/postresql
+    image: bitnami/postgresql
+    container_name: help-desk-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
