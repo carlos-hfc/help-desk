@@ -8,6 +8,7 @@ const envSchema = z.object({
     .default("development"),
   COOKIE_NAME: z.string(),
   JWT_SECRET: z.string(),
+  ALLOWED_ORIGINS: z.string().optional(),
 })
 
 export const env = envSchema.parse(process.env)
