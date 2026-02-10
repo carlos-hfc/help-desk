@@ -16,6 +16,7 @@ import { errorHandler } from "./error-handler"
 import { authenticate } from "./routes/session/authenticate"
 import { register } from "./routes/session/register"
 import { signOut } from "./routes/session/sign-out"
+import { listTechnicians } from "./routes/technician/list-technicians"
 
 export const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -61,3 +62,5 @@ app.register(fastifyJwt, {
 app.register(register)
 app.register(authenticate)
 app.register(signOut)
+
+app.register(listTechnicians)
