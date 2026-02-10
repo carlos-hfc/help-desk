@@ -8,6 +8,8 @@ import {
   type ZodTypeProvider,
 } from "fastify-type-provider-zod"
 
+import { register } from "@/routes/session/register"
+
 import { errorHandler } from "./error-handler"
 
 export const app = fastify().withTypeProvider<ZodTypeProvider>()
@@ -33,3 +35,5 @@ app.register(fastifyApiReference, {
     theme: "kepler",
   },
 })
+
+app.register(register)
