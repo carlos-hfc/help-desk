@@ -1,1 +1,1 @@
-CREATE DATABASE help-desk-test;
+CREATE DATABASE help_desk_test;

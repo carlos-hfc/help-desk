@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "tsx watch --env-file .env src/server.ts",
     "lint": "eslint .",
+    "pretest": "dotenv -e .env.test npx prisma migrate dev",
     "test": "dotenv -e .env.test vitest run",
     "test:watch": "dotenv -e .env.test vitest"
   },
@@ -17,6 +18,7 @@
     "@fastify/static": "^9.0.0",
     "@fastify/swagger": "^9.7.0",
     "@prisma/adapter-pg": "^7.3.0",
+    "@prisma/client": "^7.3.0",
     "@scalar/fastify-api-reference": "^1.44.15",
     "argon2": "^0.44.0",
     "dotenv": "^17.2.4",
@@ -28,6 +30,7 @@
   },
   "devDependencies": {
     "@ch-faustino/eslint-config": "^2.0.1",
+    "@faker-js/faker": "^10.3.0",
     "@types/node": "^25.2.2",
     "@types/supertest": "^6.0.3",
     "dotenv-cli": "^11.0.0",
