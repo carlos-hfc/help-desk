@@ -21,27 +21,14 @@ model User {
   role        UserRole
   image       String?
   firstAccess Boolean?
+  hours       String[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  technicianAvailabilities TechnicianAvailability[]
-  clientCalls              Call[]                   @relation("clientCalls")
-  technicianCalls          Call[]                   @relation("technicianCalls")
+  clientCalls     Call[] @relation("clientCalls")
+  technicianCalls Call[] @relation("technicianCalls")
 
   @@map("users")
-}
-
-model TechnicianAvailability {
-  id        String   @id @default(uuid())
-  hour      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  technician   User   @relation(fields: [technicianId], references: [id])
-  technicianId String
-
-  @@index([technicianId])
-  @@map("technicianAvailabilities")
 }
 
 model Service {

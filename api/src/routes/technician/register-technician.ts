@@ -9,7 +9,7 @@ import { UserAlreadyExists } from "@/errors/user-already-exists"
 import { prisma } from "@/lib/prisma"
 import { auth } from "@/middlewares/auth"
 import { verifyUserRole } from "@/middlewares/verify-user-role"
-import { hours } from "@/utils/hours"
+import { hours as availableHours } from "@/utils/hours"
 
 export const registerTechnician: FastifyPluginAsyncZod = async app => {
   app.register(auth).post(
@@ -22,12 +22,12 @@ export const registerTechnician: FastifyPluginAsyncZod = async app => {
         body: z.object({
           name: z.string().nonempty(),
           email: z.email(),
-          hoursAvailability: z.array(z.string()),
+          hours: z.array(z.string()),
         }),
       },
     },
     async (request, reply) => {
-      const { email, hoursAvailability, name } = request.body
+      const { email, hours, name } = request.body
 
       const userExists = await prisma.user.findUnique({
         where: { email },
@@ -39,10 +39,10 @@ export const registerTechnician: FastifyPluginAsyncZod = async app => {
 
       const password = await hash(randomBytes(10).toString("hex"))
 
-      for (let index = 0; index < hoursAvailability.length; index++) {
-        const hour = hoursAvailability[index]
+      for (let index = 0; index < hours.length; index++) {
+        const hour = hours[index]
 
-        if (!hours.includes(hour)) {
+        if (!availableHours.includes(hour)) {
           throw new ClientError(`The hour ${hour} is not allowed`)
         }
       }
@@ -53,11 +53,7 @@ export const registerTechnician: FastifyPluginAsyncZod = async app => {
           password,
           email,
           role: "TECHNICIAN",
-          technicianAvailabilities: {
-            createMany: {
-              data: hoursAvailability.map(hour => ({ hour })),
-            },
-          },
+          hours,
         },
       })
 

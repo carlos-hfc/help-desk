@@ -21,12 +21,7 @@ export const listTechnicians: FastifyPluginAsyncZod = async app => {
                 name: z.string(),
                 email: z.email(),
                 image: z.string().nullable(),
-                availabilities: z.array(
-                  z.object({
-                    id: z.uuid(),
-                    hour: z.string(),
-                  }),
-                ),
+                hours: z.array(z.string()),
               }),
             ),
           }),
@@ -38,20 +33,9 @@ export const listTechnicians: FastifyPluginAsyncZod = async app => {
         where: {
           role: "TECHNICIAN",
         },
-        include: {
-          technicianAvailabilities: true,
-        },
       })
 
-      return reply.send({
-        technicians: technicians.map(tech => ({
-          ...tech,
-          availabilities: tech.technicianAvailabilities.map(availability => ({
-            id: availability.id,
-            hour: availability.hour,
-          })),
-        })),
-      })
+      return reply.send({ technicians })
     },
   )
 }

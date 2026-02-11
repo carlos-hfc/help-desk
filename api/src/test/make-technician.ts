@@ -12,12 +12,16 @@ export function makeTechnician(override: Partial<MakeTechnicianParams> = {}) {
   return {
     ...user,
     role: "TECHNICIAN",
-    hoursAvailability:
+    hours:
       override.hours ??
-      faker.helpers.multiple(() =>
-        String(faker.number.int({ min: 8, max: 22 }))
-          .padStart(2, "0")
-          .padEnd(5, ":00"),
+      Array.from(
+        new Set(
+          faker.helpers.multiple(() =>
+            String(faker.number.int({ min: 8, max: 22 }))
+              .padStart(2, "0")
+              .padEnd(5, ":00"),
+          ),
+        ),
       ),
   }
 }

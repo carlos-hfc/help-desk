@@ -27,11 +27,7 @@ describe("List technicians [GET] /technicians", () => {
       technicians: expect.arrayContaining([
         expect.objectContaining({
           id: expect.any(String),
-          availabilities: expect.arrayContaining([
-            expect.objectContaining({
-              hour: expect.any(String),
-            }),
-          ]),
+          hours: expect.any(Array),
         }),
       ]),
     })
