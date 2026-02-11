@@ -17,6 +17,7 @@ import { authenticate } from "./routes/session/authenticate"
 import { register } from "./routes/session/register"
 import { signOut } from "./routes/session/sign-out"
 import { listTechnicians } from "./routes/technician/list-technicians"
+import { registerTechnician } from "./routes/technician/register-technician"
 
 export const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -64,3 +65,4 @@ app.register(authenticate)
 app.register(signOut)
 
 app.register(listTechnicians)
+app.register(registerTechnician)
