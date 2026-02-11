@@ -15,6 +15,7 @@ import { env } from "./env"
 import { errorHandler } from "./error-handler"
 import { listClients } from "./routes/client/list-clients"
 import { authenticate } from "./routes/session/authenticate"
+import { createPassword } from "./routes/session/create-password"
 import { register } from "./routes/session/register"
 import { signOut } from "./routes/session/sign-out"
 import { validateFirstAccess } from "./routes/session/validate-first-acess"
@@ -64,6 +65,7 @@ app.register(fastifyJwt, {
 
 app.register(register)
 app.register(validateFirstAccess)
+app.register(createPassword)
 app.register(authenticate)
 app.register(signOut)
 
