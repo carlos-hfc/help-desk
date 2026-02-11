@@ -45,4 +45,21 @@ describe("Register technician [POST] /techinicians", () => {
     expect(response.status).toEqual(401)
     expect(response.body).toHaveProperty("message", "Unauthorized")
   })
+
+  it("should not be able to register a technician with available hour not allowed", async () => {
+    const { token } = await createAndAuthUser(app, { role: "ADMIN" })
+
+    const technician = makeTechnician({ firstAccess: null, hours: ["00:00"] })
+
+    const response = await request(app.server)
+      .post("/technicians")
+      .set("Cookie", token)
+      .send(technician)
+
+    expect(response.status).toEqual(400)
+    expect(response.body).toHaveProperty(
+      "message",
+      "The hour 00:00 is not allowed",
+    )
+  })
 })
