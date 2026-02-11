@@ -19,6 +19,7 @@ import { createPassword } from "./routes/session/create-password"
 import { register } from "./routes/session/register"
 import { signOut } from "./routes/session/sign-out"
 import { validateFirstAccess } from "./routes/session/validate-first-acess"
+import { editAvailability } from "./routes/technician/edit-availability"
 import { listTechnicians } from "./routes/technician/list-technicians"
 import { registerTechnician } from "./routes/technician/register-technician"
 
@@ -71,5 +72,6 @@ app.register(signOut)
 
 app.register(listTechnicians)
 app.register(registerTechnician)
+app.register(editAvailability)
 
 app.register(listClients)
