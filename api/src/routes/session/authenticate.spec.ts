@@ -5,9 +5,11 @@ import { makeUser } from "@/test/make-user"
 
 describe("Authenticate user [POST] /sessions/authenticate", () => {
   it("should be able to authenticate an user", async () => {
-    const user = makeUser()
+    const user = makeUser({ firstAccess: null })
 
     await request(app.server).post("/sessions/register").send(user)
+    await request(app.server).patch("/sessions/first-access").send(user)
+    await request(app.server).post("/sessions/create-password").send(user)
 
     const response = await request(app.server)
       .post("/sessions/authenticate")
