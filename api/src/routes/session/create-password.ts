@@ -41,7 +41,9 @@ export const createPassword: FastifyPluginAsyncZod = async app => {
       const passwordHash = await hash(password)
 
       await prisma.user.update({
-        where: { email },
+        where: {
+          id: user.id,
+        },
         data: {
           password: passwordHash,
           firstAccess: false,
