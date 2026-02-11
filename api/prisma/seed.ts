@@ -13,6 +13,7 @@ export async function main() {
       email: "carlos@email.com",
       password,
       role: "ADMIN",
+      firstAccess: false,
     },
   })
 
@@ -23,18 +24,21 @@ export async function main() {
         email: "tech1@email.com",
         password,
         role: "TECHNICIAN",
+        firstAccess: false,
       },
       {
         name: "Tech 2",
         email: "tech2@email.com",
         password,
         role: "TECHNICIAN",
+        firstAccess: false,
       },
       {
         name: "Tech 3",
         email: "tech3@email.com",
         password,
         role: "TECHNICIAN",
+        firstAccess: false,
       },
     ],
   })
@@ -45,6 +49,7 @@ export async function main() {
       email: "client@email.com",
       password,
       role: "CLIENT",
+      firstAccess: false,
     },
   })
 

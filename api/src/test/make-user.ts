@@ -9,6 +9,7 @@ export function makeUser(override: Partial<MakeUserParams> = {}) {
     name: faker.person.fullName(),
     email: faker.internet.email().toLowerCase(),
     password: faker.internet.password(),
+    firstAccess: faker.helpers.arrayElement([true, false, null]),
     ...override,
   }
 }

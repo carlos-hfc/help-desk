@@ -14,14 +14,15 @@ enum UserRole {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
-  role      UserRole
-  image     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(uuid())
+  name        String
+  email       String   @unique
+  password    String
+  role        UserRole
+  image       String?
+  firstAccess Boolean?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   technicianAvailabilities TechnicianAvailability[]
   clientCalls              Call[]                   @relation("clientCalls")

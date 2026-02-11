@@ -18,6 +18,7 @@ export async function createAndAuthUser(
       password: await hash(user.password),
       name: user.name,
       role: user.role ?? "CLIENT",
+      firstAccess: false,
     },
   })
 
