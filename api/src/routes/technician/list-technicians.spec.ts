@@ -2,10 +2,20 @@ import request from "supertest"
 
 import { app } from "@/app"
 import { createAndAuthUser } from "@/test/create-and-auth-user"
+import { makeTechnician } from "@/test/make-technician"
 
 describe("List technicians [GET] /technicians", () => {
   it("should be able to list technicians", async () => {
     const { token } = await createAndAuthUser(app, { role: "ADMIN" })
+
+    for (let index = 0; index < 3; index++) {
+      const technician = makeTechnician()
+
+      await request(app.server)
+        .post("/technicians")
+        .set("Cookie", token)
+        .send(technician)
+    }
 
     const response = await request(app.server)
       .get("/technicians")
