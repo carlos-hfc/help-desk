@@ -17,6 +17,7 @@ import { listClients } from "./routes/client/list-clients"
 import { authenticate } from "./routes/session/authenticate"
 import { register } from "./routes/session/register"
 import { signOut } from "./routes/session/sign-out"
+import { validateFirstAccess } from "./routes/session/validate-first-acess"
 import { listTechnicians } from "./routes/technician/list-technicians"
 import { registerTechnician } from "./routes/technician/register-technician"
 
@@ -62,6 +63,7 @@ app.register(fastifyJwt, {
 })
 
 app.register(register)
+app.register(validateFirstAccess)
 app.register(authenticate)
 app.register(signOut)
 
