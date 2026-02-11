@@ -13,6 +13,7 @@ import {
 
 import { env } from "./env"
 import { errorHandler } from "./error-handler"
+import { listClients } from "./routes/client/list-clients"
 import { authenticate } from "./routes/session/authenticate"
 import { register } from "./routes/session/register"
 import { signOut } from "./routes/session/sign-out"
@@ -66,3 +67,5 @@ app.register(signOut)
 
 app.register(listTechnicians)
 app.register(registerTechnician)
+
+app.register(listClients)
