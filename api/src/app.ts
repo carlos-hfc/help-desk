@@ -27,6 +27,7 @@ import { validateFirstAccess } from "./routes/session/validate-first-acess"
 import { editAvailability } from "./routes/technician/edit-availability"
 import { listTechnicians } from "./routes/technician/list-technicians"
 import { registerTechnician } from "./routes/technician/register-technician"
+import { getProfile } from "./routes/user/get-profile"
 
 export const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -86,3 +87,5 @@ app.register(createService)
 app.register(listServices)
 app.register(updateServiceStatus)
 app.register(editService)
+
+app.register(getProfile)
