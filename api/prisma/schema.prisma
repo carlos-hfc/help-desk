@@ -59,7 +59,7 @@ model Call {
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 
-  client   User   @relation("clientCalls", fields: [clientId], references: [id])
+  client   User   @relation("clientCalls", fields: [clientId], references: [id], onDelete: Cascade)
   clientId String
 
   technician   User   @relation("technicianCalls", fields: [technicianId], references: [id])
