@@ -7,11 +7,10 @@ export type MakeTechnicianParams = MakeUserParams & {
 }
 
 export function makeTechnician(override: Partial<MakeTechnicianParams> = {}) {
-  const user = makeUser(override)
+  const user = makeUser({ ...override, role: "TECHNICIAN" })
 
   return {
     ...user,
-    role: "TECHNICIAN",
     hours:
       override.hours ??
       Array.from(

@@ -1,6 +1,6 @@
 import { faker } from "@faker-js/faker"
 
-import { Prisma } from "@/generated/prisma/browser"
+import { Prisma, UserRole } from "@/generated/prisma/browser"
 
 export type MakeUserParams = Prisma.UserCreateInput
 
@@ -11,6 +11,7 @@ export function makeUser(override: Partial<MakeUserParams> = {}) {
     password: faker.internet.password(),
     firstAccess: faker.helpers.arrayElement([true, false, null]),
     image: faker.helpers.arrayElement(["image.png", null]),
+    role: faker.helpers.enumValue(UserRole),
     ...override,
   }
 }
