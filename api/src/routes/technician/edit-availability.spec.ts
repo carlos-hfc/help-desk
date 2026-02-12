@@ -6,7 +6,7 @@ import { app } from "@/app"
 import { createAndAuthUser } from "@/test/create-and-auth-user"
 import { makeTechnician } from "@/test/make-technician"
 
-describe("Edit availability [PATCH] /technicians/hours/:technicianId", () => {
+describe("Edit availability [PATCH] /technicians/:technicianId/hours", () => {
   it("should be able to update the available hours of a technician", async () => {
     const { token } = await createAndAuthUser(app, { role: "ADMIN" })
 
@@ -21,7 +21,7 @@ describe("Edit availability [PATCH] /technicians/hours/:technicianId", () => {
       .send(technician)
 
     const response = await request(app.server)
-      .patch(`/technicians/hours/${technicianResponse.body.technicianId}`)
+      .patch(`/technicians/${technicianResponse.body.technicianId}/hours`)
       .set("Cookie", token)
       .send({
         hours: [...technician.hours, "11:00"],
@@ -34,7 +34,7 @@ describe("Edit availability [PATCH] /technicians/hours/:technicianId", () => {
     const { token } = await createAndAuthUser(app, { role: "ADMIN" })
 
     const response = await request(app.server)
-      .patch(`/technicians/hours/${randomUUID()}`)
+      .patch(`/technicians/${randomUUID()}/hours`)
       .set("Cookie", token)
       .send({
         hours: ["11:00"],
@@ -58,7 +58,7 @@ describe("Edit availability [PATCH] /technicians/hours/:technicianId", () => {
       .send(technician)
 
     const response = await request(app.server)
-      .patch(`/technicians/hours/${technicianResponse.body.technicianId}`)
+      .patch(`/technicians/${technicianResponse.body.technicianId}/hours`)
       .set("Cookie", token)
       .send({
         hours: ["00:00"],

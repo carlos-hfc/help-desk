@@ -9,7 +9,7 @@ import { hours as availableHours } from "@/utils/hours"
 
 export const editAvailability: FastifyPluginAsyncZod = async app => {
   app.register(auth).patch(
-    "/technicians/hours/:technicianId",
+    "/technicians/:technicianId/hours",
     {
       preHandler: [verifyUserRole("ADMIN")],
       schema: {
