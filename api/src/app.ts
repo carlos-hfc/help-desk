@@ -15,6 +15,7 @@ import { env } from "./env"
 import { errorHandler } from "./error-handler"
 import { listClients } from "./routes/client/list-clients"
 import { removeClient } from "./routes/client/remove-client"
+import { createService } from "./routes/service/create-service"
 import { authenticate } from "./routes/session/authenticate"
 import { createPassword } from "./routes/session/create-password"
 import { register } from "./routes/session/register"
@@ -77,3 +78,5 @@ app.register(editAvailability)
 
 app.register(listClients)
 app.register(removeClient)
+
+app.register(createService)
