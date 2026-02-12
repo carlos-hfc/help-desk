@@ -10,6 +10,7 @@ export function makeUser(override: Partial<MakeUserParams> = {}) {
     email: faker.internet.email().toLowerCase(),
     password: faker.internet.password(),
     firstAccess: faker.helpers.arrayElement([true, false, null]),
+    image: faker.helpers.arrayElement(["image.png", null]),
     ...override,
   }
 }

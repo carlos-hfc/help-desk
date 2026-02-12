@@ -10,21 +10,22 @@ export async function createAndAuthUser(
   app: FastifyInstance,
   override: Partial<MakeUserParams> = {},
 ) {
-  const user = makeUser(override)
+  const createdUser = makeUser(override)
 
-  await prisma.user.create({
+  const user = await prisma.user.create({
     data: {
-      email: user.email,
-      password: await hash(user.password),
-      name: user.name,
-      role: user.role ?? "CLIENT",
+      email: createdUser.email,
+      password: await hash(createdUser.password),
+      name: createdUser.name,
+      role: createdUser.role ?? "CLIENT",
       firstAccess: false,
+      image: createdUser.image,
     },
   })
 
   const response = await request(app.server)
     .post("/sessions/authenticate")
-    .send(user)
+    .send(createdUser)
 
   const token = response.get("Set-Cookie") as string[]
 
