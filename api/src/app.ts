@@ -28,6 +28,7 @@ import { editAvailability } from "./routes/technician/edit-availability"
 import { listTechnicians } from "./routes/technician/list-technicians"
 import { registerTechnician } from "./routes/technician/register-technician"
 import { getProfile } from "./routes/user/get-profile"
+import { updateProfile } from "./routes/user/update-profile"
 
 export const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -89,3 +90,4 @@ app.register(updateServiceStatus)
 app.register(editService)
 
 app.register(getProfile)
+app.register(updateProfile)
