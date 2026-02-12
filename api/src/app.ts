@@ -17,6 +17,7 @@ import { listClients } from "./routes/client/list-clients"
 import { removeClient } from "./routes/client/remove-client"
 import { createService } from "./routes/service/create-service"
 import { listServices } from "./routes/service/list-services"
+import { updateServiceStatus } from "./routes/service/update-service-status"
 import { authenticate } from "./routes/session/authenticate"
 import { createPassword } from "./routes/session/create-password"
 import { register } from "./routes/session/register"
@@ -82,3 +83,4 @@ app.register(removeClient)
 
 app.register(createService)
 app.register(listServices)
+app.register(updateServiceStatus)
