@@ -22,7 +22,6 @@ describe("List calls by client [GET] /clients/calls", () => {
       .set("Cookie", token)
       .send()
 
-    console.log(response.body)
     expect(response.status).toBe(200)
     expect(response.body).toEqual({
       calls: expect.arrayContaining([
