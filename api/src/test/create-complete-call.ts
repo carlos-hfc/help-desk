@@ -25,7 +25,7 @@ export async function createCompleteCall(
 
   const fakeCall = makeCall(override)
 
-  return await prisma.call.create({
+  const call = await prisma.call.create({
     data: {
       ...fakeCall,
       totalValue: service.price.toNumber(),
@@ -40,4 +40,9 @@ export async function createCompleteCall(
       },
     },
   })
+
+  return {
+    call,
+    service,
+  }
 }

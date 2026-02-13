@@ -14,13 +14,13 @@ describe("Update call status [PATCH] /calls/:callId/status", () => {
       hours: makeTechnician().hours,
     })
 
-    const { id: callId } = await createCompleteCall({
+    const { call } = await createCompleteCall({
       technicianId: technician.id,
       hour: technician.hours[0],
     })
 
     const response = await request(app.server)
-      .patch(`/calls/${callId}/status`)
+      .patch(`/calls/${call.id}/status`)
       .set("Cookie", token)
       .send({
         status: "IN_PROGRESS",
@@ -52,14 +52,14 @@ describe("Update call status [PATCH] /calls/:callId/status", () => {
       hours: makeTechnician().hours,
     })
 
-    const { id: callId } = await createCompleteCall({
+    const { call } = await createCompleteCall({
       technicianId: technician.id,
       hour: technician.hours[0],
       status: "CLOSED",
     })
 
     const response = await request(app.server)
-      .patch(`/calls/${callId}/status`)
+      .patch(`/calls/${call.id}/status`)
       .set("Cookie", token)
       .send({
         status: "IN_PROGRESS",
