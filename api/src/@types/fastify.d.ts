@@ -13,5 +13,9 @@ interface CurrentUser {
 declare module "fastify" {
   export interface FastifyRequest {
     getCurrentUser(): Promise<CurrentUser>
+    upload: {
+      fileUrl: string
+      deleteOldFile(url: string | null): Promise<void>
+    }
   }
 }

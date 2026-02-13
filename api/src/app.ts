@@ -1,6 +1,10 @@
+import { resolve } from "node:path"
+
 import fastifyCookie from "@fastify/cookie"
 import fastifyCors from "@fastify/cors"
 import fastifyJwt from "@fastify/jwt"
+import fastifyMultipart from "@fastify/multipart"
+import fastifyStatic from "@fastify/static"
 import fastifySwagger from "@fastify/swagger"
 import fastifyApiReference from "@scalar/fastify-api-reference"
 import fastify from "fastify"
@@ -27,6 +31,7 @@ import { validateFirstAccess } from "./routes/session/validate-first-acess"
 import { editAvailability } from "./routes/technician/edit-availability"
 import { listTechnicians } from "./routes/technician/list-technicians"
 import { registerTechnician } from "./routes/technician/register-technician"
+import { addImageProfile } from "./routes/user/add-profile-image"
 import { getProfile } from "./routes/user/get-profile"
 import { updateProfile } from "./routes/user/update-profile"
 
@@ -70,6 +75,15 @@ app.register(fastifyJwt, {
     expiresIn: "1d",
   },
 })
+app.register(fastifyMultipart, {
+  limits: {
+    fileSize: 1024 * 1024 * 5, // 5 MB
+  },
+})
+app.register(fastifyStatic, {
+  root: resolve(__dirname, "..", "uploads"),
+  prefix: "/uploads",
+})
 
 app.register(register)
 app.register(validateFirstAccess)
@@ -91,3 +105,4 @@ app.register(editService)
 
 app.register(getProfile)
 app.register(updateProfile)
+app.register(addImageProfile)
