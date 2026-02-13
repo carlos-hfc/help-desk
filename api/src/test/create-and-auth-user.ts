@@ -17,7 +17,7 @@ export async function createAndAuthUser(
       email: createdUser.email,
       password: await hash(createdUser.password),
       name: createdUser.name,
-      role: createdUser.role ?? "CLIENT",
+      role: createdUser.role,
       firstAccess: false,
       image: createdUser.image,
     },
