@@ -19,6 +19,7 @@ export async function createAndAuthUser(
       name: createdUser.name,
       role: createdUser.role,
       image: createdUser.image,
+      hours: createdUser.hours,
     },
   })
 

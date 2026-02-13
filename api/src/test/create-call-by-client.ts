@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma"
 import { makeCall } from "./make-call"
 import { makeService } from "./make-service"
 import { makeTechnician } from "./make-technician"
+import { makeUser } from "./make-user"
 
 export type CreateCallByClientParams = Prisma.CallUncheckedCreateInput & {
   clientId: string
@@ -12,8 +13,12 @@ export type CreateCallByClientParams = Prisma.CallUncheckedCreateInput & {
 export async function createCallByClient(
   override: Partial<CreateCallByClientParams> = {},
 ) {
+  const client = await prisma.user.create({
+    data: makeUser(),
+  })
+
   const technician = await prisma.user.create({
-    data: makeTechnician({}),
+    data: makeTechnician(),
   })
 
   const service = await prisma.service.create({
@@ -26,9 +31,9 @@ export async function createCallByClient(
     data: {
       ...fakeCall,
       totalValue: service.price.toNumber(),
-      hour: technician.hours[0],
-      clientId: override.clientId!,
-      technicianId: technician.id,
+      hour: override.hour ?? technician.hours[0],
+      clientId: override.clientId ?? client.id,
+      technicianId: override.technicianId ?? technician.id,
       callServices: {
         create: {
           serviceId: service.id,
