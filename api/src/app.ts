@@ -29,7 +29,6 @@ import { authenticate } from "./routes/session/authenticate"
 import { createPassword } from "./routes/session/create-password"
 import { register } from "./routes/session/register"
 import { signOut } from "./routes/session/sign-out"
-import { validateFirstAccess } from "./routes/session/validate-first-acess"
 import { editAvailability } from "./routes/technician/edit-availability"
 import { listTechnicians } from "./routes/technician/list-technicians"
 import { registerTechnician } from "./routes/technician/register-technician"
@@ -88,7 +87,6 @@ app.register(fastifyStatic, {
 })
 
 app.register(register)
-app.register(validateFirstAccess)
 app.register(createPassword)
 app.register(authenticate)
 app.register(signOut)

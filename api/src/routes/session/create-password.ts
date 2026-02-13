@@ -4,6 +4,7 @@ import z from "zod"
 
 import { ClientError } from "@/errors/client-error"
 import { prisma } from "@/lib/prisma"
+import { NoContentSchema, NotFoundSchema } from "@/utils/global-response-schema"
 
 export const createPassword: FastifyPluginAsyncZod = async app => {
   app.post(
@@ -11,19 +12,14 @@ export const createPassword: FastifyPluginAsyncZod = async app => {
     {
       schema: {
         tags: ["session"],
-        summary: "Create password after the user validates the first access",
+        summary: "Create password",
         body: z.object({
           email: z.email(),
           password: z.string().min(6),
         }),
         response: {
-          204: z.void().describe("No Content"),
-          404: z
-            .object({
-              message: z.string(),
-              statusCode: z.number(),
-            })
-            .describe("Not Found"),
+          204: NoContentSchema,
+          404: NotFoundSchema,
         },
       },
     },
@@ -31,7 +27,7 @@ export const createPassword: FastifyPluginAsyncZod = async app => {
       const { email, password } = request.body
 
       const user = await prisma.user.findUnique({
-        where: { email, firstAccess: true },
+        where: { email },
       })
 
       if (!user) {
@@ -46,7 +42,6 @@ export const createPassword: FastifyPluginAsyncZod = async app => {
         },
         data: {
           password: passwordHash,
-          firstAccess: false,
         },
       })
 

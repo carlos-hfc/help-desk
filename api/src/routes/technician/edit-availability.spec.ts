@@ -11,7 +11,6 @@ describe("Edit availability [PATCH] /technicians/:technicianId/hours", () => {
     const { token } = await createAndAuthUser(app, { role: "ADMIN" })
 
     const technician = makeTechnician({
-      firstAccess: false,
       hours: ["08:00", "09:00", "10:00"],
     })
 
@@ -48,7 +47,6 @@ describe("Edit availability [PATCH] /technicians/:technicianId/hours", () => {
     const { token } = await createAndAuthUser(app, { role: "ADMIN" })
 
     const technician = makeTechnician({
-      firstAccess: false,
       hours: ["08:00", "09:00", "10:00"],
     })
 

@@ -8,7 +8,7 @@ describe("Register technician [POST] /techinicians", () => {
   it("should be able to register a technician", async () => {
     const { token } = await createAndAuthUser(app, { role: "ADMIN" })
 
-    const technician = makeTechnician({ firstAccess: null })
+    const technician = makeTechnician()
 
     const response = await request(app.server)
       .post("/technicians")
@@ -24,7 +24,7 @@ describe("Register technician [POST] /techinicians", () => {
   it("should not be able to register a technician with a non-admin user", async () => {
     const { token } = await createAndAuthUser(app, { role: "CLIENT" })
 
-    const technician = makeTechnician({ firstAccess: null })
+    const technician = makeTechnician()
 
     const response = await request(app.server)
       .post("/technicians")
@@ -36,7 +36,7 @@ describe("Register technician [POST] /techinicians", () => {
   })
 
   it("should not be able to register a technician without JWT token", async () => {
-    const technician = makeTechnician({ firstAccess: null })
+    const technician = makeTechnician()
 
     const response = await request(app.server)
       .post("/technicians")
@@ -49,7 +49,7 @@ describe("Register technician [POST] /techinicians", () => {
   it("should not be able to register a technician with available hour not allowed", async () => {
     const { token } = await createAndAuthUser(app, { role: "ADMIN" })
 
-    const technician = makeTechnician({ firstAccess: null, hours: ["00:00"] })
+    const technician = makeTechnician({ hours: ["00:00"] })
 
     const response = await request(app.server)
       .post("/technicians")

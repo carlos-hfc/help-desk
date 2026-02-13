@@ -13,7 +13,6 @@ export async function main() {
       email: "carlos@email.com",
       password,
       role: "ADMIN",
-      firstAccess: false,
     },
   })
 
@@ -24,21 +23,21 @@ export async function main() {
         email: "tech1@email.com",
         password,
         role: "TECHNICIAN",
-        firstAccess: false,
+        hours: hours.slice(0, 5),
       },
       {
         name: "Tech 2",
         email: "tech2@email.com",
         password,
         role: "TECHNICIAN",
-        firstAccess: false,
+        hours: hours.slice(5, 10),
       },
       {
         name: "Tech 3",
         email: "tech3@email.com",
         password,
         role: "TECHNICIAN",
-        firstAccess: false,
+        hours: hours.slice(10, 15),
       },
     ],
   })
@@ -49,24 +48,7 @@ export async function main() {
       email: "client@email.com",
       password,
       role: "CLIENT",
-      firstAccess: false,
     },
-  })
-
-  const technicianAvailability = technicians.flatMap((technician, index) => {
-    const init = index * 5
-    const end = init + 5
-
-    const technicianHours = hours.slice(init, end)
-
-    return technicianHours.map(hour => ({
-      hour,
-      technicianId: technician.id,
-    }))
-  })
-
-  await prisma.technicianAvailability.createMany({
-    data: technicianAvailability,
   })
 
   const serviceName = [

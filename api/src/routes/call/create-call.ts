@@ -8,7 +8,7 @@ import { verifyUserRole } from "@/middlewares/verify-user-role"
 import {
   BadRequestSchema,
   NotFoundSchema,
-} from "@/utils/global-error-response-schema"
+} from "@/utils/global-response-schema"
 
 export const createCall: FastifyPluginAsyncZod = async app => {
   app.register(auth).post(
@@ -56,7 +56,6 @@ export const createCall: FastifyPluginAsyncZod = async app => {
         where: {
           id: technicianId,
           role: "TECHNICIAN",
-          firstAccess: null,
         },
       })
 

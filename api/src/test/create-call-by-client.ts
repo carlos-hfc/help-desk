@@ -13,9 +13,7 @@ export async function createCallByClient(
   override: Partial<CreateCallByClientParams> = {},
 ) {
   const technician = await prisma.user.create({
-    data: makeTechnician({
-      firstAccess: null,
-    }),
+    data: makeTechnician({}),
   })
 
   const service = await prisma.service.create({

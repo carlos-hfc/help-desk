@@ -38,7 +38,7 @@ export const authenticate: FastifyPluginAsyncZod = async app => {
       const { email, password } = request.body
 
       const user = await prisma.user.findUnique({
-        where: { email, firstAccess: false },
+        where: { email },
       })
 
       if (!user) {

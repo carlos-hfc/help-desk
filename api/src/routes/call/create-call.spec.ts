@@ -14,7 +14,7 @@ describe("Create a call [POST] /calls", () => {
       role: "ADMIN",
     })
 
-    const technician = makeTechnician({ firstAccess: null })
+    const technician = makeTechnician()
 
     const technicianResponse = await request(app.server)
       .post("/technicians")
@@ -50,7 +50,7 @@ describe("Create a call [POST] /calls", () => {
       role: "ADMIN",
     })
 
-    const technician = makeTechnician({ firstAccess: null })
+    const technician = makeTechnician()
 
     const technicianResponse = await request(app.server)
       .post("/technicians")
@@ -105,7 +105,7 @@ describe("Create a call [POST] /calls", () => {
       role: "ADMIN",
     })
 
-    const technician = makeTechnician({ firstAccess: null, hours: ["08:00"] })
+    const technician = makeTechnician({ hours: ["08:00"] })
 
     const technicianResponse = await request(app.server)
       .post("/technicians")
