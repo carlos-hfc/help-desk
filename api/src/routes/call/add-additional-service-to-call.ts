@@ -54,17 +54,45 @@ export const addAdditionalServiceToCall: FastifyPluginAsyncZod = async app => {
 
       const { serviceId } = request.body
 
+      const service = await prisma.service.findUnique({
+        where: {
+          id: serviceId,
+        },
+      })
+
+      if (!service) {
+        throw new ClientError("Service not found", 404)
+      }
+
       if (call.callServices.find(item => item.serviceId === serviceId)) {
         throw new ClientError("This service has already been added to the call")
       }
 
-      await prisma.callService.create({
+      await prisma.call.update({
+        where: {
+          id: callId,
+          technicianId,
+          status: "IN_PROGRESS",
+        },
         data: {
-          createdBy: "TECHNICIAN",
-          callId,
-          serviceId,
+          totalValue: call.totalValue.toNumber() + service.price.toNumber(),
+          updatedAt: new Date(),
+          callServices: {
+            create: {
+              createdBy: "TECHNICIAN",
+              serviceId,
+            },
+          },
         },
       })
+
+      // await prisma.callService.create({
+      //   data: {
+      //     createdBy: "TECHNICIAN",
+      //     callId,
+      //     serviceId,
+      //   },
+      // })
 
       return reply.status(204).send()
     },
