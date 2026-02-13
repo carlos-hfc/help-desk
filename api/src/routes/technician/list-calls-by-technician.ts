@@ -24,7 +24,10 @@ export const listCallsByTechnician: FastifyPluginAsyncZod = async app => {
                   title: z.string().nullable(),
                   service: z.string(),
                   totalValue: z.number(),
-                  client: z.string(),
+                  client: z.object({
+                    name: z.string(),
+                    image: z.string().nullable(),
+                  }),
                   status: z.enum(CallStatus),
                   updatedAt: z.date(),
                 }),
@@ -48,6 +51,7 @@ export const listCallsByTechnician: FastifyPluginAsyncZod = async app => {
           client: {
             select: {
               name: true,
+              image: true,
             },
           },
           callServices: {
@@ -71,7 +75,6 @@ export const listCallsByTechnician: FastifyPluginAsyncZod = async app => {
           ...call,
           updatedAt: call.callServices[0].updatedAt,
           totalValue: call.totalValue.toNumber(),
-          client: call.client.name,
           service: call.callServices[0].service.name,
         })),
       })

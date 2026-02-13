@@ -36,6 +36,10 @@ describe("List calls by client [GET] /clients/calls", () => {
           updatedAt: expect.any(String),
           service: expect.any(String),
           totalValue: expect.any(Number),
+          client: expect.objectContaining({
+            name: expect.any(String),
+            image: expect.toBeOneOf([null, expect.any(String)]),
+          }),
         }),
       ]),
     })

@@ -24,8 +24,14 @@ describe("List calls [GET] /calls", () => {
           id: expect.any(String),
           status: expect.any(String),
           updatedAt: expect.any(String),
-          client: expect.any(String),
-          technician: expect.any(String),
+          client: expect.objectContaining({
+            name: expect.any(String),
+            image: expect.toBeOneOf([null, expect.any(String)]),
+          }),
+          technician: expect.objectContaining({
+            name: expect.any(String),
+            image: expect.toBeOneOf([null, expect.any(String)]),
+          }),
           service: expect.any(String),
           totalValue: expect.any(Number),
         }),
