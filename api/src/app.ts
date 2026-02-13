@@ -17,6 +17,7 @@ import {
 
 import { env } from "./env"
 import { errorHandler } from "./error-handler"
+import { createCall } from "./routes/call/create-call"
 import { listClients } from "./routes/client/list-clients"
 import { removeClient } from "./routes/client/remove-client"
 import { createService } from "./routes/service/create-service"
@@ -106,3 +107,5 @@ app.register(editService)
 app.register(getProfile)
 app.register(updateProfile)
 app.register(addImageProfile)
+
+app.register(createCall)
