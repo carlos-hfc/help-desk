@@ -18,6 +18,7 @@ import {
 import { env } from "./env"
 import { errorHandler } from "./error-handler"
 import { createCall } from "./routes/call/create-call"
+import { listCallsByClient } from "./routes/client/list-calls-by-client"
 import { listClients } from "./routes/client/list-clients"
 import { removeClient } from "./routes/client/remove-client"
 import { createService } from "./routes/service/create-service"
@@ -98,6 +99,7 @@ app.register(editAvailability)
 
 app.register(listClients)
 app.register(removeClient)
+app.register(listCallsByClient)
 
 app.register(createService)
 app.register(listServices)
