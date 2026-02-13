@@ -19,6 +19,7 @@ import { env } from "./env"
 import { errorHandler } from "./error-handler"
 import { addAdditionalServiceToCall } from "./routes/call/add-additional-service-to-call"
 import { createCall } from "./routes/call/create-call"
+import { getCallById } from "./routes/call/get-call-by-id"
 import { listCalls } from "./routes/call/list-calls"
 import { updateCallStatus } from "./routes/call/update-call-status"
 import { listCallsByClient } from "./routes/client/list-calls-by-client"
@@ -117,3 +118,4 @@ app.register(createCall)
 app.register(updateCallStatus)
 app.register(addAdditionalServiceToCall)
 app.register(listCalls)
+app.register(getCallById)
