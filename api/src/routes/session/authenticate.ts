@@ -6,6 +6,7 @@ import { env } from "@/env"
 import { InvalidCredentials } from "@/errors/invalid-credentials"
 import { UserRole } from "@/generated/prisma/enums"
 import { prisma } from "@/lib/prisma"
+import { BadRequestSchema } from "@/utils/global-response-schema"
 
 export const authenticate: FastifyPluginAsyncZod = async app => {
   app.post(
@@ -25,12 +26,7 @@ export const authenticate: FastifyPluginAsyncZod = async app => {
               role: z.enum(UserRole),
             })
             .describe("OK"),
-          400: z
-            .object({
-              message: z.string(),
-              statusCode: z.number(),
-            })
-            .describe("Bad Request"),
+          400: BadRequestSchema,
         },
       },
     },

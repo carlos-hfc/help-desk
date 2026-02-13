@@ -19,6 +19,7 @@ export const addAdditionalServiceToCall: FastifyPluginAsyncZod = async app => {
       schema: {
         tags: ["call"],
         summary: "Add additional service to the call",
+        security: [{ cookieAuth: [] }],
         params: z.object({
           callId: z.uuid(),
         }),

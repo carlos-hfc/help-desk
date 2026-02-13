@@ -5,6 +5,7 @@ import { ClientError } from "@/errors/client-error"
 import { prisma } from "@/lib/prisma"
 import { auth } from "@/middlewares/auth"
 import { verifyUserRole } from "@/middlewares/verify-user-role"
+import { NoContentSchema, NotFoundSchema } from "@/utils/global-response-schema"
 
 export const editService: FastifyPluginAsyncZod = async app => {
   app.register(auth).put(
@@ -14,6 +15,7 @@ export const editService: FastifyPluginAsyncZod = async app => {
       schema: {
         tags: ["service"],
         summary: "Edit a service",
+        security: [{ cookieAuth: [] }],
         body: z.object({
           name: z.string().optional(),
           price: z.number().positive().optional(),
@@ -22,13 +24,8 @@ export const editService: FastifyPluginAsyncZod = async app => {
           serviceId: z.uuid(),
         }),
         response: {
-          204: z.void().describe("No Content"),
-          404: z
-            .object({
-              message: z.string(),
-              statusCode: z.number(),
-            })
-            .describe("Not Found"),
+          204: NoContentSchema,
+          404: NotFoundSchema,
         },
       },
     },

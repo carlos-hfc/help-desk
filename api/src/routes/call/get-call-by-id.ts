@@ -5,6 +5,7 @@ import { ClientError } from "@/errors/client-error"
 import { CallStatus } from "@/generated/prisma/enums"
 import { prisma } from "@/lib/prisma"
 import { auth } from "@/middlewares/auth"
+import { NotFoundSchema } from "@/utils/global-response-schema"
 
 export const getCallById: FastifyPluginAsyncZod = async app => {
   app.register(auth).get(
@@ -13,40 +14,44 @@ export const getCallById: FastifyPluginAsyncZod = async app => {
       schema: {
         tags: ["call"],
         summary: "Get call by ID",
+        security: [{ cookieAuth: [] }],
         params: z.object({
           callId: z.uuid(),
         }),
         repsonse: {
-          200: z.object({
-            call: z.object({
-              id: z.uuid(),
-              clientId: z.uuid(),
-              technicianId: z.uuid(),
-              protocol: z.number(),
-              title: z.string().nullable(),
-              description: z.string().nullable(),
-              totalValue: z.number(),
-              hour: z.string(),
-              status: z.enum(CallStatus),
-              createdAt: z.date(),
-              updatedAt: z.date(),
-              client: {
-                name: z.string(),
-                image: z.string().nullable(),
-              },
-              technician: {
-                name: z.string(),
-                image: z.string().nullable(),
-              },
-              services: z.array(
-                z.object({
-                  id: z.uuid(),
+          200: z
+            .object({
+              call: z.object({
+                id: z.uuid(),
+                clientId: z.uuid(),
+                technicianId: z.uuid(),
+                protocol: z.number(),
+                title: z.string().nullable(),
+                description: z.string().nullable(),
+                totalValue: z.number(),
+                hour: z.string(),
+                status: z.enum(CallStatus),
+                createdAt: z.date(),
+                updatedAt: z.date(),
+                client: {
                   name: z.string(),
-                  price: z.number(),
-                }),
-              ),
-            }),
-          }),
+                  image: z.string().nullable(),
+                },
+                technician: {
+                  name: z.string(),
+                  image: z.string().nullable(),
+                },
+                services: z.array(
+                  z.object({
+                    id: z.uuid(),
+                    name: z.string(),
+                    price: z.number(),
+                  }),
+                ),
+              }),
+            })
+            .describe("OK"),
+          404: NotFoundSchema,
         },
       },
     },

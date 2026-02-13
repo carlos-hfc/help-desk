@@ -5,6 +5,11 @@ import { ClientError } from "@/errors/client-error"
 import { prisma } from "@/lib/prisma"
 import { auth } from "@/middlewares/auth"
 import { verifyUserRole } from "@/middlewares/verify-user-role"
+import {
+  BadRequestSchema,
+  NoContentSchema,
+  NotFoundSchema,
+} from "@/utils/global-response-schema"
 import { hours as availableHours } from "@/utils/hours"
 
 export const editAvailability: FastifyPluginAsyncZod = async app => {
@@ -15,6 +20,7 @@ export const editAvailability: FastifyPluginAsyncZod = async app => {
       schema: {
         tags: ["technician"],
         summary: "Edit availability technician hours",
+        security: [{ cookieAuth: [] }],
         body: z.object({
           hours: z.array(z.string()),
         }),
@@ -22,13 +28,9 @@ export const editAvailability: FastifyPluginAsyncZod = async app => {
           technicianId: z.uuid(),
         }),
         response: {
-          204: z.void().describe("No Content"),
-          404: z
-            .object({
-              message: z.string(),
-              statusCode: z.number(),
-            })
-            .describe("Not Found"),
+          204: NoContentSchema,
+          400: BadRequestSchema,
+          404: NotFoundSchema,
         },
       },
     },

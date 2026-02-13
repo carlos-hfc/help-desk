@@ -13,6 +13,7 @@ export const createService: FastifyPluginAsyncZod = async app => {
       schema: {
         tags: ["service"],
         summary: "Create a service",
+        security: [{ cookieAuth: [] }],
         body: z.object({
           name: z.string(),
           price: z.number().positive(),

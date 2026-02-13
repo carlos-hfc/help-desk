@@ -14,6 +14,7 @@ export const listCalls: FastifyPluginAsyncZod = async app => {
       schema: {
         tags: ["call"],
         summary: "List calls",
+        security: [{ cookieAuth: [] }],
         response: {
           200: z
             .object({

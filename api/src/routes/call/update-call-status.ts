@@ -20,6 +20,7 @@ export const updateCallStatus: FastifyPluginAsyncZod = async app => {
       schema: {
         tags: ["call"],
         summary: "Update call status",
+        security: [{ cookieAuth: [] }],
         params: z.object({
           callId: z.uuid(),
         }),

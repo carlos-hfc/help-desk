@@ -9,6 +9,10 @@ import { UserAlreadyExists } from "@/errors/user-already-exists"
 import { prisma } from "@/lib/prisma"
 import { auth } from "@/middlewares/auth"
 import { verifyUserRole } from "@/middlewares/verify-user-role"
+import {
+  BadRequestSchema,
+  ConflictSchema,
+} from "@/utils/global-response-schema"
 import { hours as availableHours } from "@/utils/hours"
 
 export const registerTechnician: FastifyPluginAsyncZod = async app => {
@@ -19,11 +23,21 @@ export const registerTechnician: FastifyPluginAsyncZod = async app => {
       schema: {
         tags: ["technician"],
         summary: "Register a technician",
+        security: [{ cookieAuth: [] }],
         body: z.object({
           name: z.string().nonempty(),
           email: z.email(),
           hours: z.array(z.string()),
         }),
+        response: {
+          201: z
+            .object({
+              technicianId: z.uuid(),
+            })
+            .describe("Created"),
+          400: BadRequestSchema,
+          409: ConflictSchema,
+        },
       },
     },
     async (request, reply) => {

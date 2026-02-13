@@ -8,8 +8,9 @@ export const getProfile: FastifyPluginAsyncZod = async app => {
     "/profile",
     {
       schema: {
-        tag: ["profile"],
+        tags: ["profile"],
         summary: "Get profile from logged user",
+        security: [{ cookieAuth: [] }],
         response: {
           200: z
             .object({

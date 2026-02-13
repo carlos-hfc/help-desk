@@ -11,17 +11,20 @@ export const listServices: FastifyPluginAsyncZod = async app => {
       schema: {
         tags: ["service"],
         summary: "List services",
+        security: [{ cookieAuth: [] }],
         response: {
-          200: z.object({
-            services: z.array(
-              z.object({
-                id: z.uuid(),
-                name: z.string(),
-                price: z.number().positive(),
-                isActive: z.boolean(),
-              }),
-            ),
-          }),
+          200: z
+            .object({
+              services: z.array(
+                z.object({
+                  id: z.uuid(),
+                  name: z.string(),
+                  price: z.number().positive(),
+                  isActive: z.boolean(),
+                }),
+              ),
+            })
+            .describe("OK"),
         },
       },
     },

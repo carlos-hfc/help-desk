@@ -1,11 +1,13 @@
 import { FastifyPluginAsyncZod } from "fastify-type-provider-zod"
+import z from "zod"
 
 import { prisma } from "@/lib/prisma"
 import { auth } from "@/middlewares/auth"
 import { uploadFile } from "@/middlewares/upload-file"
-
-const ACCEPTED_FILES = ["image/jpeg", "image/jpg", "image/png", "image/webp"]
-const MAX_FILE_SIZE = 1024 * 1024 * 5 // 5 MB
+import {
+  BadRequestSchema,
+  ContentTooLargeSchema,
+} from "@/utils/global-response-schema"
 
 export const addImageProfile: FastifyPluginAsyncZod = async app => {
   app.register(auth).patch(
@@ -13,9 +15,19 @@ export const addImageProfile: FastifyPluginAsyncZod = async app => {
     {
       preHandler: [uploadFile],
       schema: {
-        tag: ["profile"],
+        tags: ["profile"],
         summary: "Add image profile from logged user",
+        security: [{ cookieAuth: [] }],
         consumes: ["multipart/form-data"],
+        response: {
+          200: z
+            .object({
+              image: z.url(),
+            })
+            .describe("OK"),
+          400: BadRequestSchema,
+          413: ContentTooLargeSchema,
+        },
       },
     },
     async (request, reply) => {

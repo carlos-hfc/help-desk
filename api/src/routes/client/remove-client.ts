@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma"
 import { auth } from "@/middlewares/auth"
 import { verifyUserRole } from "@/middlewares/verify-user-role"
 import { deleteFileFromStorage } from "@/utils/delete-file-from-storage"
+import { NoContentSchema, NotFoundSchema } from "@/utils/global-response-schema"
 
 export const removeClient: FastifyPluginAsyncZod = async app => {
   app.register(auth).delete(
@@ -15,17 +16,13 @@ export const removeClient: FastifyPluginAsyncZod = async app => {
       schema: {
         tags: ["client"],
         summary: "Delete a client",
+        security: [{ cookieAuth: [] }],
         params: z.object({
           clientId: z.uuid(),
         }),
         response: {
-          204: z.void().describe("No Content"),
-          404: z
-            .object({
-              message: z.string(),
-              statusCode: z.number(),
-            })
-            .describe("No Content"),
+          204: NoContentSchema,
+          404: NotFoundSchema,
         },
       },
     },

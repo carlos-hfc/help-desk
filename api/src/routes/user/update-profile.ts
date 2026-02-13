@@ -4,21 +4,23 @@ import z from "zod"
 
 import { prisma } from "@/lib/prisma"
 import { auth } from "@/middlewares/auth"
+import { NoContentSchema } from "@/utils/global-response-schema"
 
 export const updateProfile: FastifyPluginAsyncZod = async app => {
   app.register(auth).put(
     "/profile",
     {
       schema: {
-        tag: ["profile"],
+        tags: ["profile"],
         summary: "Update profile from logged user",
+        security: [{ cookieAuth: [] }],
         body: z.object({
           name: z.string().optional(),
           email: z.email().optional(),
           password: z.string().min(6).optional(),
         }),
         response: {
-          204: z.void().describe("OK"),
+          204: NoContentSchema,
         },
       },
     },

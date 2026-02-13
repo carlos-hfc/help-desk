@@ -18,6 +18,7 @@ export const createCall: FastifyPluginAsyncZod = async app => {
       schema: {
         tags: ["call"],
         summary: "Create a call",
+        security: [{ cookieAuth: [] }],
         body: z.object({
           title: z.string().nonempty(),
           description: z.string().nonempty(),

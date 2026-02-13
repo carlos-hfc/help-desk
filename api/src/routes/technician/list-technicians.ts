@@ -13,18 +13,21 @@ export const listTechnicians: FastifyPluginAsyncZod = async app => {
       schema: {
         tags: ["technician"],
         summary: "List technicians",
+        security: [{ cookieAuth: [] }],
         response: {
-          200: z.object({
-            technicians: z.array(
-              z.object({
-                id: z.uuid(),
-                name: z.string(),
-                email: z.email(),
-                image: z.string().nullable(),
-                hours: z.array(z.string()),
-              }),
-            ),
-          }),
+          200: z
+            .object({
+              technicians: z.array(
+                z.object({
+                  id: z.uuid(),
+                  name: z.string(),
+                  email: z.email(),
+                  image: z.string().nullable(),
+                  hours: z.array(z.string()),
+                }),
+              ),
+            })
+            .describe("OK"),
         },
       },
     },

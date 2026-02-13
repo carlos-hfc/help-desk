@@ -6,6 +6,7 @@ import z from "zod"
 
 import { UserAlreadyExists } from "@/errors/user-already-exists"
 import { prisma } from "@/lib/prisma"
+import { ConflictSchema } from "@/utils/global-response-schema"
 
 export const register: FastifyPluginAsyncZod = async app => {
   app.post(
@@ -24,12 +25,7 @@ export const register: FastifyPluginAsyncZod = async app => {
               userId: z.uuid(),
             })
             .describe("Created"),
-          409: z
-            .object({
-              message: z.string(),
-              statusCode: z.number(),
-            })
-            .describe("Conflict"),
+          409: ConflictSchema,
         },
       },
     },

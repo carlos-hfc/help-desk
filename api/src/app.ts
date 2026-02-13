@@ -54,6 +54,15 @@ app.register(fastifySwagger, {
       title: "Help Desk",
       version: "1.0.0",
     },
+    components: {
+      securitySchemes: {
+        cookieAuth: {
+          type: "apiKey",
+          in: "cookie",
+          name: env.COOKIE_NAME,
+        },
+      },
+    },
   },
   transform: jsonSchemaTransform,
 })
