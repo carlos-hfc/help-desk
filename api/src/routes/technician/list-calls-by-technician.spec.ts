@@ -4,7 +4,7 @@ import request from "supertest"
 import { app } from "@/app"
 import { CallStatus } from "@/generated/prisma/enums"
 import { createAndAuthUser } from "@/test/create-and-auth-user"
-import { createCallByClient } from "@/test/create-call-by-client"
+import { createCompleteCall } from "@/test/create-complete-call"
 import { makeTechnician } from "@/test/make-technician"
 
 describe("List calls by client [GET] /clients/calls", () => {
@@ -15,7 +15,7 @@ describe("List calls by client [GET] /clients/calls", () => {
     })
 
     for (let index = 0; index < 5; index++) {
-      await createCallByClient({
+      await createCompleteCall({
         status: faker.helpers.enumValue(CallStatus),
         technicianId: technician.id,
         hour: technician.hours[0],

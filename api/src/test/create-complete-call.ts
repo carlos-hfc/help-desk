@@ -6,12 +6,10 @@ import { makeService } from "./make-service"
 import { makeTechnician } from "./make-technician"
 import { makeUser } from "./make-user"
 
-export type CreateCallByClientParams = Prisma.CallUncheckedCreateInput & {
-  clientId: string
-}
+export type CreateCompleteCallParams = Prisma.CallUncheckedCreateInput
 
-export async function createCallByClient(
-  override: Partial<CreateCallByClientParams> = {},
+export async function createCompleteCall(
+  override: Partial<CreateCompleteCallParams> = {},
 ) {
   const client = await prisma.user.create({
     data: makeUser(),

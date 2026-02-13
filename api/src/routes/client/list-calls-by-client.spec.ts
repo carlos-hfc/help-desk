@@ -4,14 +4,14 @@ import request from "supertest"
 import { app } from "@/app"
 import { CallStatus } from "@/generated/prisma/enums"
 import { createAndAuthUser } from "@/test/create-and-auth-user"
-import { createCallByClient } from "@/test/create-call-by-client"
+import { createCompleteCall } from "@/test/create-complete-call"
 
 describe("List calls by client [GET] /clients/calls", () => {
   it("should be able to list calls by logged user", async () => {
     const { token, user } = await createAndAuthUser(app, { role: "CLIENT" })
 
     for (let index = 0; index < 5; index++) {
-      await createCallByClient({
+      await createCompleteCall({
         clientId: user.id,
         status: faker.helpers.enumValue(CallStatus),
       })
