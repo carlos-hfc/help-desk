@@ -52,8 +52,10 @@ enum CallStatus {
 
 model Call {
   id          String     @id @default(uuid())
+  protocol    Int        @default(autoincrement())
   title       String?
   description String?
+  hour        String
   status      CallStatus @default(OPEN)
   totalValue  Decimal    @default(0)
   createdAt   DateTime   @default(now())
