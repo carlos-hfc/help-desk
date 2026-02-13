@@ -5,6 +5,7 @@ import { ClientError } from "@/errors/client-error"
 import { prisma } from "@/lib/prisma"
 import { auth } from "@/middlewares/auth"
 import { verifyUserRole } from "@/middlewares/verify-user-role"
+import { deleteFileFromStorage } from "@/utils/delete-file-from-storage"
 
 export const removeClient: FastifyPluginAsyncZod = async app => {
   app.register(auth).delete(
@@ -41,6 +42,8 @@ export const removeClient: FastifyPluginAsyncZod = async app => {
       if (!client) {
         throw new ClientError("User not found", 404)
       }
+
+      await deleteFileFromStorage(client.image)
 
       await prisma.user.delete({
         where: {
