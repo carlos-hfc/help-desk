@@ -17,6 +17,7 @@ import {
 
 import { env } from "./env"
 import { errorHandler } from "./error-handler"
+import { addAdditionalServiceToCall } from "./routes/call/add-additional-service-to-call"
 import { createCall } from "./routes/call/create-call"
 import { updateCallStatus } from "./routes/call/update-call-status"
 import { listCallsByClient } from "./routes/client/list-calls-by-client"
@@ -113,3 +114,4 @@ app.register(addImageProfile)
 
 app.register(createCall)
 app.register(updateCallStatus)
+app.register(addAdditionalServiceToCall)
