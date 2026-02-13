@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto"
 import request from "supertest"
 
 import { app } from "@/app"
+import { prisma } from "@/lib/prisma"
 import { createAndAuthUser } from "@/test/create-and-auth-user"
 import { createCompleteCall } from "@/test/create-complete-call"
 import { makeService } from "@/test/make-service"
@@ -40,6 +41,54 @@ describe("Add additional service to call [PATCH] /calls/:callId/service", () => 
     expect(response.status).toBe(204)
   })
 
+  it("should be able to update total value call on add additional service", async () => {
+    const { token: tokenAdmin } = await createAndAuthUser(app, {
+      role: "ADMIN",
+    })
+
+    const serviceResponse = await request(app.server)
+      .post("/services")
+      .set("Cookie", tokenAdmin)
+      .send(makeService())
+
+    const { token, user: technician } = await createAndAuthUser(app, {
+      role: "TECHNICIAN",
+      hours: makeTechnician().hours,
+    })
+
+    const { call } = await createCompleteCall({
+      technicianId: technician.id,
+      hour: technician.hours[0],
+      status: "IN_PROGRESS",
+    })
+
+    const response = await request(app.server)
+      .patch(`/calls/${call.id}/service`)
+      .set("Cookie", token)
+      .send({
+        serviceId: serviceResponse.body.serviceId,
+      })
+
+    expect(response.status).toBe(204)
+
+    const [prismaCall, prismaService] = await Promise.all([
+      prisma.call.findUnique({
+        where: {
+          id: call.id,
+        },
+      }),
+      prisma.service.findUnique({
+        where: {
+          id: serviceResponse.body.serviceId,
+        },
+      }),
+    ])
+
+    expect(prismaCall?.totalValue.toNumber()).toBe(
+      call.totalValue.toNumber() + (prismaService?.price.toNumber() ?? 0),
+    )
+  })
+
   it("should not be able to add additional service to inexistent call", async () => {
     const { token } = await createAndAuthUser(app, {
       role: "TECHNICIAN",
@@ -55,6 +104,29 @@ describe("Add additional service to call [PATCH] /calls/:callId/service", () => 
 
     expect(response.status).toBe(404)
     expect(response.body).toHaveProperty("message", "Call not found")
+  })
+
+  it("should not be able to add additional inexistent service to call", async () => {
+    const { token, user: technician } = await createAndAuthUser(app, {
+      role: "TECHNICIAN",
+      hours: makeTechnician().hours,
+    })
+
+    const { call } = await createCompleteCall({
+      technicianId: technician.id,
+      hour: technician.hours[0],
+      status: "IN_PROGRESS",
+    })
+
+    const response = await request(app.server)
+      .patch(`/calls/${call.id}/service`)
+      .set("Cookie", token)
+      .send({
+        serviceId: randomUUID(),
+      })
+
+    expect(response.status).toBe(404)
+    expect(response.body).toHaveProperty("message", "Service not found")
   })
 
   it("should not be able to add additional service to call that has already been added", async () => {
