@@ -18,6 +18,7 @@ import {
 import { env } from "./env"
 import { errorHandler } from "./error-handler"
 import { createCall } from "./routes/call/create-call"
+import { updateCallStatus } from "./routes/call/update-call-status"
 import { listCallsByClient } from "./routes/client/list-calls-by-client"
 import { listClients } from "./routes/client/list-clients"
 import { removeClient } from "./routes/client/remove-client"
@@ -111,3 +112,4 @@ app.register(updateProfile)
 app.register(addImageProfile)
 
 app.register(createCall)
+app.register(updateCallStatus)
