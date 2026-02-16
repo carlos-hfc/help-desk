@@ -1,20 +1,13 @@
-import logoDark from "@/assets/logo-dark.png"
+import { useNavigate } from "react-router"
+
 import { Button } from "@/components/button"
 import { Input } from "@/components/input"
 
 export function Login() {
+  const navigate = useNavigate()
+
   return (
-    <div className="h-dvh py-8 lg:py-12 px-6 lg:px-0 flex flex-col gap-6 lg:gap-8 lg:max-w-100 w-full mx-auto">
-      <div className="flex items-center justify-center gap-3">
-        <img
-          src={logoDark}
-          alt="HelpDesk"
-          className="size-10 shrink-0"
-        />
-
-        <span className="text-blue-dark font-bold text-2xl">HelpDesk</span>
-      </div>
-
+    <>
       <div className="flex flex-col gap-3 w-full">
         <form className="border border-gray-500 rounded-lg p-6 lg:p-7 flex flex-col gap-4">
           <header className="flex flex-col gap-0.5 mb-6">
@@ -50,11 +43,12 @@ export function Login() {
           <Button
             variant="secondary"
             className="w-full"
+            onClick={() => navigate("/auth/sign-up")}
           >
             Criar conta
           </Button>
         </div>
       </div>
-    </div>
+    </>
   )
 }
