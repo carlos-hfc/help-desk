@@ -19,3 +19,7 @@
   --color-feedback-progress: #355ec5;
   --color-feedback-done: #508b26;
 }
+
+* {
+  @apply leading-snug;
+}
