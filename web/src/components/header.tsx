@@ -68,7 +68,7 @@ export function Header() {
               <UsersIcon />
               Técnicos
             </NavLink>
-            <NavLink to="/">
+            <NavLink to="/clients">
               <BriefcaseBusinessIcon />
               Clientes
             </NavLink>

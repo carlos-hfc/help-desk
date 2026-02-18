@@ -4,6 +4,7 @@ import { AppLayout } from "@/layouts/app-layout"
 import { AuthLayout } from "@/layouts/auth-layout"
 import { Login } from "@/pages/auth/login"
 import { SignUp } from "@/pages/auth/sign-up"
+import { Clients } from "@/pages/clients"
 import { Dashboard } from "@/pages/dashboard"
 import { Technicians } from "@/pages/technicians"
 
@@ -32,6 +33,10 @@ export const routes = createBrowserRouter([
       {
         path: "technicians",
         element: <Technicians />,
+      },
+      {
+        path: "clients",
+        element: <Clients />,
       },
     ],
   },
