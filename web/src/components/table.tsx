@@ -14,7 +14,7 @@ export function Table({ containerClassName, className, ...props }: TableProps) {
     >
       <table
         {...props}
-        className={cn("w-full", className)}
+        className={cn("w-full text-sm text-gray-200", className)}
       />
     </div>
   )
@@ -28,6 +28,39 @@ export function TableBody({
     <tbody
       {...props}
       className={cn("[&_tr:last-child]:border-0", className)}
+    />
+  )
+}
+
+export function TableHead({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<"th">) {
+  return (
+    <th
+      {...props}
+      className={cn("p-3 text-left", className)}
+    >
+      {children && <span className="line-clamp-1">{children}</span>}
+    </th>
+  )
+}
+
+export function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
+  return (
+    <tr
+      {...props}
+      className={cn(className)}
+    />
+  )
+}
+
+export function TableCell({ className, ...props }: React.ComponentProps<"td">) {
+  return (
+    <td
+      {...props}
+      className={cn("p-3", className)}
     />
   )
 }

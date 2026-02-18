@@ -3,27 +3,30 @@ import { PenLineIcon } from "lucide-react"
 import { Avatar } from "@/components/avatar"
 import { Button } from "@/components/button"
 import { CallStatus } from "@/components/call-status"
+import { TableCell, TableRow } from "@/components/table"
 
 export function CallsTableRow() {
   return (
-    <tr className="text-left text-sm text-gray-200">
-      <td className="p-3 text-xs">13/04/25 20:20</td>
-      <td className="p-3 text-xs font-bold hidden lg:table-cell">0003</td>
-      <td className="p-3">
+    <TableRow>
+      <TableCell className="text-xs">13/04/25 20:20</TableCell>
+      <TableCell className="text-xs font-bold hidden lg:table-cell">
+        0003
+      </TableCell>
+      <TableCell>
         <span className="block font-bold">Rede lenta</span>
         <span className="block text-xs">Instacao de rede</span>
-      </td>
-      <td className="p-3 hidden lg:table-cell">R$ 180,00</td>
-      <td className="p-3 hidden lg:table-cell">
+      </TableCell>
+      <TableCell className="hidden lg:table-cell">R$ 180,00</TableCell>
+      <TableCell className="hidden lg:table-cell">
         <Avatar name="Carlos Faustino" />
-      </td>
-      <td className="p-3 hidden lg:table-cell">
+      </TableCell>
+      <TableCell className="hidden lg:table-cell">
         <Avatar name="Carlos Faustino" />
-      </td>
-      <td className="p-3">
+      </TableCell>
+      <TableCell>
         <CallStatus status="OPEN" />
-      </td>
-      <td className="p-3">
+      </TableCell>
+      <TableCell>
         <Button
           variant="secondary"
           size="sm"
@@ -31,7 +34,7 @@ export function CallsTableRow() {
         >
           <PenLineIcon className="text-gray-200" />
         </Button>
-      </td>
-    </tr>
+      </TableCell>
+    </TableRow>
   )
 }
