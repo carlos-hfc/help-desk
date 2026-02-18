@@ -1,8 +1,12 @@
 import {
+  BriefcaseBusinessIcon,
   CircleUserIcon,
   ClipboardListIcon,
   LogOutIcon,
   MenuIcon,
+  PlusIcon,
+  UsersIcon,
+  WrenchIcon,
 } from "lucide-react"
 
 import logolight from "@/assets/logo-light.png"
@@ -61,8 +65,24 @@ export function Header() {
               Chamados
             </NavLink>
             <NavLink to="/">
+              <UsersIcon />
+              Técnicos
+            </NavLink>
+            <NavLink to="/">
+              <BriefcaseBusinessIcon />
+              Clientes
+            </NavLink>
+            <NavLink to="/">
+              <WrenchIcon />
+              Serviços
+            </NavLink>
+            <NavLink to="/">
               <ClipboardListIcon />
-              Chamados
+              Meus chamados
+            </NavLink>
+            <NavLink to="/">
+              <PlusIcon />
+              Criar chamado
             </NavLink>
           </nav>
         </div>
