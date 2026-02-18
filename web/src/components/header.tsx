@@ -64,7 +64,7 @@ export function Header() {
               <ClipboardListIcon />
               Chamados
             </NavLink>
-            <NavLink to="/">
+            <NavLink to="/technicians">
               <UsersIcon />
               Técnicos
             </NavLink>

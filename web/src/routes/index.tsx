@@ -5,6 +5,7 @@ import { AuthLayout } from "@/layouts/auth-layout"
 import { Login } from "@/pages/auth/login"
 import { SignUp } from "@/pages/auth/sign-up"
 import { Dashboard } from "@/pages/dashboard"
+import { Technicians } from "@/pages/technicians"
 
 export const routes = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ export const routes = createBrowserRouter([
       {
         path: "dashboard",
         element: <Dashboard />,
+      },
+      {
+        path: "technicians",
+        element: <Technicians />,
       },
     ],
   },
