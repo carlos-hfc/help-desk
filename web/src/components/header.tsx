@@ -1,4 +1,12 @@
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuTrigger,
+} from "@radix-ui/react-dropdown-menu"
+import {
   BriefcaseBusinessIcon,
   CircleUserIcon,
   ClipboardListIcon,
@@ -18,24 +26,66 @@ export function Header() {
   return (
     <header className="bg-gray-100 p-6 lg:p-0 w-full h-dvh">
       <div className="lg:w-52 flex items-center lg:items-start lg:flex-col gap-4 lg:h-full relative">
-        <input
-          type="checkbox"
-          id="menu-toggle"
-          className="peer/menu hidden"
-          aria-label="Abrir e fechar menu"
-        />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              icon
+              className="lg:hidden outline-none"
+            >
+              <MenuIcon className="size-5" />
+            </Button>
+          </DropdownMenuTrigger>
 
-        <Button
-          icon
-          className="lg:hidden"
-        >
-          <label
-            htmlFor="menu-toggle"
-            className="size-full grid place-items-center"
-          >
-            <MenuIcon />
-          </label>
-        </Button>
+          <DropdownMenuPortal>
+            <DropdownMenuContent
+              asChild
+              sideOffset={16}
+            >
+              <nav className="max-lg:flex hidden flex-col justify-center ms-5 gap-0.5 w-[calc(100vw-40px)] p-5 bg-gray-100 rounded-lg *:outline-none">
+                <DropdownMenuLabel className="lg:hidden uppercase text-gray-400 text-xs font-bold mb-4">
+                  Menu
+                </DropdownMenuLabel>
+
+                <DropdownMenuItem asChild>
+                  <NavLink to="/dashboard">
+                    <ClipboardListIcon />
+                    Chamados
+                  </NavLink>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <NavLink to="/technicians">
+                    <UsersIcon />
+                    Técnicos
+                  </NavLink>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <NavLink to="/clients">
+                    <BriefcaseBusinessIcon />
+                    Clientes
+                  </NavLink>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <NavLink to="/services">
+                    <WrenchIcon />
+                    Serviços
+                  </NavLink>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <NavLink to="/">
+                    <ClipboardListIcon />
+                    Meus chamados
+                  </NavLink>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <NavLink to="/">
+                    <PlusIcon />
+                    Criar chamado
+                  </NavLink>
+                </DropdownMenuItem>
+              </nav>
+            </DropdownMenuContent>
+          </DropdownMenuPortal>
+        </DropdownMenu>
 
         <div className="flex items-center gap-3 flex-1 lg:flex-none lg:p-6 lg:pt-9 lg:border-b border-gray-200 lg:w-full">
           <img
@@ -54,80 +104,114 @@ export function Header() {
           </div>
         </div>
 
-        <div className="absolute lg:static overflow-hidden top-18 z-1 h-0 lg:h-auto peer-checked/menu:h-auto w-full">
-          <nav className="flex flex-col gap-0.5 w-full p-5 lg:p-4 bg-gray-100 rounded-lg">
-            <span className="lg:hidden uppercase text-gray-400 text-xs font-bold mb-4">
-              Menu
-            </span>
+        <nav className="hidden lg:flex flex-col gap-0.5 w-full p-4 bg-gray-100 rounded-lg">
+          <NavLink to="/dashboard">
+            <ClipboardListIcon />
+            Chamados
+          </NavLink>
+          <NavLink to="/technicians">
+            <UsersIcon />
+            Técnicos
+          </NavLink>
+          <NavLink to="/clients">
+            <BriefcaseBusinessIcon />
+            Clientes
+          </NavLink>
+          <NavLink to="/services">
+            <WrenchIcon />
+            Serviços
+          </NavLink>
+          <NavLink to="/">
+            <ClipboardListIcon />
+            Meus chamados
+          </NavLink>
+          <NavLink to="/">
+            <PlusIcon />
+            Criar chamado
+          </NavLink>
+        </nav>
 
-            <NavLink to="/dashboard">
-              <ClipboardListIcon />
-              Chamados
-            </NavLink>
-            <NavLink to="/technicians">
-              <UsersIcon />
-              Técnicos
-            </NavLink>
-            <NavLink to="/clients">
-              <BriefcaseBusinessIcon />
-              Clientes
-            </NavLink>
-            <NavLink to="/">
-              <WrenchIcon />
-              Serviços
-            </NavLink>
-            <NavLink to="/">
-              <ClipboardListIcon />
-              Meus chamados
-            </NavLink>
-            <NavLink to="/">
-              <PlusIcon />
-              Criar chamado
-            </NavLink>
-          </nav>
-        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <div className="w-full border-t border-gray-200 px-4 py-5 hidden lg:flex items-center gap-3 hover:bg-gray-200 mt-auto">
+              <div className="rounded-full bg-blue-dark size-10 text-gray-600 content-center text-center">
+                UA
+              </div>
 
-        <div className="lg:mt-auto w-full relative">
-          <input
-            type="checkbox"
-            id="profile-toggle"
-            className="peer/profile hidden"
-            aria-label="Abrir e fechar menu do perfil"
-          />
-
-          <div className="absolute lg:relative overflow-hidden top-18 lg:top-20 left-0 lg:left-56 z-1 h-0 peer-checked/profile:h-auto w-full">
-            <nav className="flex flex-col gap-0.5 w-full p-5 lg:p-4 bg-gray-100 rounded-lg">
-              <span className="uppercase text-gray-400 text-xs font-bold mb-4">
-                Opções
-              </span>
-
-              <span className="flex h-10 items-center gap-3 text-gray-600 text-sm px-0 [&>svg]:size-5 w-full rounded-md">
-                <CircleUserIcon />
-                Perfil
-              </span>
-              <span className="flex h-10 items-center gap-3 text-feedback-danger text-sm px-0 [&>svg]:size-5 w-full rounded-md">
-                <LogOutIcon />
-                Sair
-              </span>
-            </nav>
-          </div>
-
-          <label
-            htmlFor="profile-toggle"
-            className="lg:w-full lg:border-t border-gray-200 lg:px-4 lg:py-5 flex items-center gap-3 lg:hover:bg-gray-200"
-          >
-            <div className="rounded-full bg-blue-dark size-10 text-gray-600 content-center text-center">
-              UA
+              <div className="hidden lg:block">
+                <span className="block text-gray-600 text-sm">
+                  Usuario admin
+                </span>
+                <span className="block text-gray-400 text-xs">
+                  admin@email.com
+                </span>
+              </div>
             </div>
+          </DropdownMenuTrigger>
 
-            <div className="hidden lg:block">
-              <span className="block text-gray-600 text-sm">Usuario admin</span>
-              <span className="block text-gray-400 text-xs">
-                admin@email.com
-              </span>
+          <DropdownMenuPortal>
+            <DropdownMenuContent
+              asChild
+              side="right"
+              sideOffset={16}
+            >
+              <nav className="flex flex-col gap-0.5 me-5 w-48 p-5 bg-gray-100 rounded-lg">
+                <DropdownMenuLabel className="uppercase text-gray-400 text-xs font-bold mb-4">
+                  Opções
+                </DropdownMenuLabel>
+
+                <DropdownMenuItem className="flex h-10 items-center gap-3 text-gray-600 text-sm px-0 [&>svg]:size-5 w-full outline-none rounded-md">
+                  <CircleUserIcon />
+                  Perfil
+                </DropdownMenuItem>
+                <DropdownMenuItem className="flex h-10 items-center gap-3 text-feedback-danger text-sm px-0 [&>svg]:size-5 w-full outline-none rounded-md">
+                  <LogOutIcon />
+                  Sair
+                </DropdownMenuItem>
+              </nav>
+            </DropdownMenuContent>
+          </DropdownMenuPortal>
+        </DropdownMenu>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <div className="lg:hidden flex items-center gap-3">
+              <div className="rounded-full bg-blue-dark size-10 text-gray-600 content-center text-center">
+                UA
+              </div>
+
+              <div className="hidden lg:block">
+                <span className="block text-gray-600 text-sm">
+                  Usuario admin
+                </span>
+                <span className="block text-gray-400 text-xs">
+                  admin@email.com
+                </span>
+              </div>
             </div>
-          </label>
-        </div>
+          </DropdownMenuTrigger>
+
+          <DropdownMenuPortal>
+            <DropdownMenuContent
+              asChild
+              sideOffset={16}
+            >
+              <nav className="flex flex-col gap-0.5 me-5 w-[calc(100vw-40px)] p-5 bg-gray-100 rounded-lg">
+                <span className="uppercase text-gray-400 text-xs font-bold mb-4">
+                  Opções
+                </span>
+                <span className="flex h-10 items-center gap-3 text-gray-600 text-sm px-0 [&>svg]:size-5 w-full rounded-md">
+                  <CircleUserIcon />
+                  Perfil
+                </span>
+                <span className="flex h-10 items-center gap-3 text-feedback-danger text-sm px-0 [&>svg]:size-5 w-full rounded-md">
+                  <LogOutIcon />
+                  Sair
+                </span>
+              </nav>
+            </DropdownMenuContent>
+          </DropdownMenuPortal>
+        </DropdownMenu>
       </div>
     </header>
   )
