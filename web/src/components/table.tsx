@@ -47,13 +47,8 @@ export function TableHead({
   )
 }
 
-export function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
-  return (
-    <tr
-      {...props}
-      className={cn(className)}
-    />
-  )
+export function TableRow(props: React.ComponentProps<"tr">) {
+  return <tr {...props} />
 }
 
 export function TableCell({ className, ...props }: React.ComponentProps<"td">) {
