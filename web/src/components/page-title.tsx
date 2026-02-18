@@ -1,15 +1,28 @@
 import { ArrowLeftIcon } from "lucide-react"
 
+import { cn } from "@/utils/cn"
+
 import { Button } from "./button"
 
 interface PageTitleProps extends React.PropsWithChildren {
   title: string
   hasBackButton?: boolean
+  className?: string
 }
 
-export function PageTitle({ title, hasBackButton, children }: PageTitleProps) {
+export function PageTitle({
+  title,
+  hasBackButton = false,
+  className,
+  children,
+}: PageTitleProps) {
   return (
-    <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-3">
+    <header
+      className={cn(
+        "flex flex-col lg:flex-row items-center lg:items-end justify-between gap-3",
+        className,
+      )}
+    >
       <div className="space-y-1">
         {hasBackButton && (
           <Button
