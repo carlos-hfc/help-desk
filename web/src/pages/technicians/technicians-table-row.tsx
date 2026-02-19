@@ -2,8 +2,8 @@ import { EyeIcon } from "lucide-react"
 
 import { Avatar } from "@/components/avatar"
 import { Button } from "@/components/button"
-import { TagTime } from "@/components/hour-tag"
 import { TableCell, TableRow } from "@/components/table"
+import { TagTime } from "@/components/tag-time"
 
 export function TechniciansTableRow() {
   return (
@@ -13,9 +13,9 @@ export function TechniciansTableRow() {
       </TableCell>
       <TableCell className="max-lg:hidden">email@email.com</TableCell>
       <TableCell>
-        <div className="space-x-1">
-          <TagTime>08:00</TagTime>
-          <TagTime>+7</TagTime>
+        <div className="flex items-center gap-1">
+          <TagTime aria-disabled>08:00</TagTime>
+          <TagTime aria-disabled>+7</TagTime>
         </div>
       </TableCell>
       <TableCell>
