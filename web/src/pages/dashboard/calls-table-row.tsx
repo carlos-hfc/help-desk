@@ -1,4 +1,5 @@
-import { PenLineIcon } from "lucide-react"
+import { EyeIcon } from "lucide-react"
+import { useNavigate } from "react-router"
 
 import { Avatar } from "@/components/avatar"
 import { Button } from "@/components/button"
@@ -6,6 +7,8 @@ import { CallStatus } from "@/components/call-status"
 import { TableCell, TableRow } from "@/components/table"
 
 export function CallsTableRow() {
+  const navigate = useNavigate()
+
   return (
     <TableRow>
       <TableCell className="text-xs">13/04/25 20:20</TableCell>
@@ -28,11 +31,12 @@ export function CallsTableRow() {
       </TableCell>
       <TableCell>
         <Button
-          variant="secondary"
+          variant="link"
           size="sm"
           icon
+          onClick={() => navigate("/dashboard/1")}
         >
-          <PenLineIcon className="text-gray-200" />
+          <EyeIcon className="text-gray-200" />
         </Button>
       </TableCell>
     </TableRow>

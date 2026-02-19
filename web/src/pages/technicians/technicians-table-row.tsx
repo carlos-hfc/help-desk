@@ -1,4 +1,5 @@
 import { EyeIcon } from "lucide-react"
+import { useNavigate } from "react-router"
 
 import { Avatar } from "@/components/avatar"
 import { Button } from "@/components/button"
@@ -6,6 +7,8 @@ import { TableCell, TableRow } from "@/components/table"
 import { TagTime } from "@/components/tag-time"
 
 export function TechniciansTableRow() {
+  const navigate = useNavigate()
+
   return (
     <TableRow>
       <TableCell>
@@ -20,9 +23,10 @@ export function TechniciansTableRow() {
       </TableCell>
       <TableCell>
         <Button
-          variant="secondary"
+          variant="link"
           size="sm"
           icon
+          onClick={() => navigate("/technicians/1")}
         >
           <EyeIcon />
         </Button>

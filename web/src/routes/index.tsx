@@ -31,18 +31,32 @@ export const routes = createBrowserRouter([
     children: [
       {
         path: "dashboard",
-        element: <Dashboard />,
-      },
-      {
-        path: "dashboard/:id",
-        element: <CallDetailsPage />,
+        children: [
+          {
+            index: true,
+            element: <Dashboard />,
+          },
+          {
+            path: ":id",
+            element: <CallDetailsPage />,
+          },
+        ],
       },
       {
         path: "technicians",
-        element: <Technicians />,
+        children: [
+          {
+            index: true,
+            element: <Technicians />,
+          },
+          {
+            path: ":id",
+            element: <TechnicianDetailsPage />,
+          },
+        ],
       },
       {
-        path: "technicians/:id",
+        path: "register-technician",
         element: <TechnicianDetailsPage />,
       },
       {

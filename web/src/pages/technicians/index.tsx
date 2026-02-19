@@ -1,4 +1,5 @@
 import { PlusIcon } from "lucide-react"
+import { useNavigate } from "react-router"
 
 import { Button } from "@/components/button"
 import { PageTitle } from "@/components/page-title"
@@ -8,13 +9,15 @@ import { TechniciansTableHead } from "./technicians-table-head"
 import { TechniciansTableRow } from "./technicians-table-row"
 
 export function Technicians() {
+  const navigate = useNavigate()
+
   return (
     <>
       <PageTitle
         title="Técnicos"
         className="flex-row"
       >
-        <Button>
+        <Button onClick={() => navigate("/register-technician")}>
           <PlusIcon />
           Novo
         </Button>
