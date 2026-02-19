@@ -12,7 +12,7 @@ export function ClientsTableRow() {
     <Dialog>
       <TableRow>
         <TableCell>
-          <Avatar name="Carlos Faustino" />
+          <Avatar alt="Carlos Faustino">Carlos Faustino</Avatar>
         </TableCell>
         <TableCell>email@email.com</TableCell>
         <TableCell>

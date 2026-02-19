@@ -21,10 +21,10 @@ export function CallsTableRow() {
       </TableCell>
       <TableCell className="hidden lg:table-cell">R$ 180,00</TableCell>
       <TableCell className="hidden lg:table-cell">
-        <Avatar name="Carlos Faustino" />
+        <Avatar alt="Carlos Faustino">Carlos Faustino</Avatar>
       </TableCell>
       <TableCell className="hidden lg:table-cell">
-        <Avatar name="Carlos Faustino" />
+        <Avatar alt="Carlos Faustino">Carlos Faustino</Avatar>
       </TableCell>
       <TableCell>
         <CallStatus status="OPEN" />

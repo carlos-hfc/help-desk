@@ -68,7 +68,7 @@ export function CallDetailsPage() {
             <span className="text-gray-400 font-bold text-xs mb-2 block">
               Cliente
             </span>
-            <Avatar name="Carlos Faustino" />
+            <Avatar alt="Carlos Faustino">Carlos Faustino</Avatar>
           </div>
         </div>
 
@@ -77,10 +77,14 @@ export function CallDetailsPage() {
             <span className="text-gray-400 font-bold text-xs mb-2 block">
               Tecnico responsavel
             </span>
-            <Avatar
-              name="Carlos Faustino"
-              email="email@email.com"
-            />
+            <Avatar alt="Carlos Faustino">
+              <div>
+                <span className="block">Carlos Faustino</span>
+                <span className="block text-gray-400 text-xs">
+                  carlos@email.com
+                </span>
+              </div>
+            </Avatar>
           </div>
 
           <div className="space-y-4">

@@ -12,7 +12,7 @@ export function TechniciansTableRow() {
   return (
     <TableRow>
       <TableCell>
-        <Avatar name="Carlos Faustino" />
+        <Avatar alt="Carlos Faustino">Carlos Faustino</Avatar>
       </TableCell>
       <TableCell className="max-lg:hidden">email@email.com</TableCell>
       <TableCell>
