@@ -64,7 +64,7 @@ function DialogHeader({
 }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("flex items-center justify-between px-7 py-5", className)}
+      className={cn("flex items-center gap-3 px-7 py-5", className)}
       {...props}
     >
       {children}
@@ -111,7 +111,7 @@ function DialogTitle({
 }: React.ComponentProps<typeof DialogPrimitive.Title>) {
   return (
     <DialogPrimitive.Title
-      className={cn("font-bold", className)}
+      className={cn("font-bold flex-1", className)}
       {...props}
     />
   )

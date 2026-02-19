@@ -5,12 +5,15 @@ import { hours } from "@/utils/hours"
 import { Avatar } from "./avatar"
 import { Button } from "./button"
 import {
+  Dialog,
   DialogBody,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "./dialog"
+import { DialogUpdatePassword } from "./dialog-update-password"
 import { Input } from "./input"
 import { TagTime } from "./tag-time"
 
@@ -54,13 +57,19 @@ export function DialogProfile() {
           <div className="relative">
             <Input label="Senha" />
 
-            <Button
-              size="sm"
-              variant="secondary"
-              className="absolute right-0 bottom-2"
-            >
-              Alterar
-            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  className="absolute right-0 bottom-2"
+                >
+                  Alterar
+                </Button>
+              </DialogTrigger>
+
+              <DialogUpdatePassword />
+            </Dialog>
           </div>
         </div>
       </DialogBody>
