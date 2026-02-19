@@ -1,9 +1,11 @@
 import { PlusIcon } from "lucide-react"
 
 import { Button } from "@/components/button"
+import { Dialog, DialogTrigger } from "@/components/dialog"
 import { PageTitle } from "@/components/page-title"
 import { Table, TableBody } from "@/components/table"
 
+import { DialogService } from "./dialog-service"
 import { ServicesTableHead } from "./services-table-head"
 import { ServicesTableRow } from "./services-table-row"
 
@@ -14,10 +16,16 @@ export function Services() {
         title="Serviços"
         className="flex-row"
       >
-        <Button>
-          <PlusIcon />
-          Novo
-        </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>
+              <PlusIcon />
+              Novo
+            </Button>
+          </DialogTrigger>
+
+          <DialogService />
+        </Dialog>
       </PageTitle>
 
       <Table>
