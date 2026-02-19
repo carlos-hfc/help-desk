@@ -1,4 +1,5 @@
 import { ArrowLeftIcon } from "lucide-react"
+import { useNavigate } from "react-router"
 
 import { cn } from "@/utils/cn"
 
@@ -16,11 +17,14 @@ export function PageTitle({
   className,
   children,
 }: PageTitleProps) {
+  const navigate = useNavigate()
+
   return (
     <header
       className={cn(
-        "flex flex-col lg:flex-row items-center lg:items-end justify-between gap-3",
+        "flex flex-col lg:flex-row lg:items-center justify-between gap-3",
         className,
+        hasBackButton && "lg:items-end",
       )}
     >
       <div className="space-y-1">
@@ -28,6 +32,7 @@ export function PageTitle({
           <Button
             variant="link"
             size="sm"
+            onClick={() => navigate("/dashboard")}
           >
             <ArrowLeftIcon />
             Voltar

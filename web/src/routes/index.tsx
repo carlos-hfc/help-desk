@@ -6,6 +6,7 @@ import { Login } from "@/pages/auth/login"
 import { SignUp } from "@/pages/auth/sign-up"
 import { Clients } from "@/pages/clients"
 import { Dashboard } from "@/pages/dashboard"
+import { CallDetailsPage } from "@/pages/dashboard/call-details-page"
 import { Services } from "@/pages/services"
 import { Technicians } from "@/pages/technicians"
 
@@ -30,6 +31,10 @@ export const routes = createBrowserRouter([
       {
         path: "dashboard",
         element: <Dashboard />,
+      },
+      {
+        path: "dashboard/:id",
+        element: <CallDetailsPage />,
       },
       {
         path: "technicians",

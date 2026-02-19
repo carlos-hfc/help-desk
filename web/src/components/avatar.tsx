@@ -1,9 +1,10 @@
 interface AvatarProps {
   avatar?: string
   name: string
+  email?: string
 }
 
-export function Avatar({ name, avatar }: AvatarProps) {
+export function Avatar({ name, avatar, email }: AvatarProps) {
   const fallback = name
     .split(" ")
     .map(item => item.charAt(0))
@@ -23,7 +24,11 @@ export function Avatar({ name, avatar }: AvatarProps) {
           {fallback}
         </div>
       )}
-      <span>{name}</span>
+
+      <div>
+        <span className="block text-gray-200">{name}</span>
+        <span className="block text-gray-300 text-xs">{email}</span>
+      </div>
     </div>
   )
 }
