@@ -9,6 +9,7 @@ import { Dashboard } from "@/pages/dashboard"
 import { CallDetailsPage } from "@/pages/dashboard/call-details-page"
 import { Services } from "@/pages/services"
 import { Technicians } from "@/pages/technicians"
+import { TechnicianDetailsPage } from "@/pages/technicians/technician-details-page"
 
 export const routes = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ export const routes = createBrowserRouter([
       {
         path: "technicians",
         element: <Technicians />,
+      },
+      {
+        path: "technicians/:id",
+        element: <TechnicianDetailsPage />,
       },
       {
         path: "clients",

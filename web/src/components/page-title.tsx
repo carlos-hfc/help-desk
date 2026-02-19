@@ -44,7 +44,11 @@ export function PageTitle({
         </h1>
       </div>
 
-      {children && <div className="flex items-center gap-2">{children}</div>}
+      {children && (
+        <div className="flex items-center gap-2 max-lg:*:w-full">
+          {children}
+        </div>
+      )}
     </header>
   )
 }
