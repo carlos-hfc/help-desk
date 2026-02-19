@@ -6,7 +6,7 @@ import { hours } from "@/utils/hours"
 
 export function TechnicianDetailsPage() {
   return (
-    <div className="max-w-3xl mx-auto w-full flex flex-col gap-6">
+    <div className="max-w-4xl mx-auto w-full flex flex-col gap-6">
       <PageTitle
         title="Perfil de técnico"
         hasBackButton
@@ -16,7 +16,7 @@ export function TechnicianDetailsPage() {
       </PageTitle>
 
       <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 text-gray-200">
-        <div className="border border-gray-500 rounded-xl p-5 flex flex-col gap-5 h-full lg:w-72">
+        <div className="border border-gray-500 rounded-xl p-5 flex flex-col gap-5 h-full lg:w-80">
           <header className="space-y-1">
             <h2 className="font-bold">Dados pessoais</h2>
             <span className="text-gray-300 text-xs">

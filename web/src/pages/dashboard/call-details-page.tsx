@@ -1,4 +1,4 @@
-import { CheckCircleIcon, Clock2Icon } from "lucide-react"
+import { CheckCircleIcon, Clock2Icon, PlusIcon, TrashIcon } from "lucide-react"
 
 import { Avatar } from "@/components/avatar"
 import { Button } from "@/components/button"
@@ -7,7 +7,7 @@ import { PageTitle } from "@/components/page-title"
 
 export function CallDetailsPage() {
   return (
-    <div className="max-w-3xl mx-auto flex flex-col gap-6">
+    <div className="max-w-4xl mx-auto w-full flex flex-col gap-6">
       <PageTitle
         title="Chamado detalhado"
         hasBackButton
@@ -22,8 +22,8 @@ export function CallDetailsPage() {
         </Button>
       </PageTitle>
 
-      <div className="flex flex-col lg:flex-row gap-4 lg:gap-6 text-gray-200">
-        <div className="border border-gray-500 rounded-xl p-5 flex flex-col gap-5 flex-1">
+      <div className="grid gap-4 lg:gap-x-6 text-gray-200">
+        <div className="border border-gray-500 rounded-xl p-5 flex flex-col gap-5 flex-1 lg:row-start-1 lg:row-end-3">
           <header className="font-bold">
             <div className="flex items-center justify-between">
               <span className="block text-gray-300 text-xs">0004</span>
@@ -69,7 +69,7 @@ export function CallDetailsPage() {
           </div>
         </div>
 
-        <div className="border border-gray-500 rounded-xl p-5 flex flex-col gap-8 h-full lg:w-72">
+        <div className="border border-gray-500 rounded-xl p-5 flex flex-col gap-8 h-full lg:w-80 lg:row-span-1 lg:col-2">
           <div>
             <span className="text-gray-400 font-bold text-xs mb-2 block">
               Tecnico responsavel
@@ -106,6 +106,49 @@ export function CallDetailsPage() {
             <div className="pt-3 border-t border-gray-500 text-sm font-bold flex justify-between">
               <p>Total</p>
               <p>R$ 200,00</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="border border-gray-500 rounded-xl p-5 flex flex-col gap-4 h-full text-xs lg:col-1">
+          <div className="flex justify-between items-center">
+            <span className="block text-gray-400 font-bold">
+              Serviços adicionais
+            </span>
+
+            <Button
+              icon
+              size="sm"
+            >
+              <PlusIcon />
+            </Button>
+          </div>
+
+          <div className="divide-y divide-gray-500">
+            <div className="flex justify-between items-center gap-6 py-1">
+              <span className="block font-bold">Assinatura de backup</span>
+
+              <span className="ml-auto">R$ 120,00</span>
+              <Button
+                icon
+                size="sm"
+                variant="link"
+              >
+                <TrashIcon className="text-feedback-danger" />
+              </Button>
+            </div>
+
+            <div className="flex justify-between items-center gap-6 py-1">
+              <span className="block font-bold">Assinatura de backup</span>
+
+              <span className="ml-auto">R$ 120,00</span>
+              <Button
+                icon
+                size="sm"
+                variant="link"
+              >
+                <TrashIcon className="text-feedback-danger" />
+              </Button>
             </div>
           </div>
         </div>
