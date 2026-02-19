@@ -49,7 +49,7 @@ export function SignUp() {
           <Button
             variant="secondary"
             className="w-full"
-            onClick={() => navigate("/auth/sign-in")}
+            onClick={() => navigate("/")}
           >
             Acessar conta
           </Button>

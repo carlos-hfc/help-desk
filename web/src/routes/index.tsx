@@ -11,15 +11,15 @@ import { Technicians } from "@/pages/technicians"
 
 export const routes = createBrowserRouter([
   {
-    path: "auth",
+    path: "",
     element: <AuthLayout />,
     children: [
       {
-        path: "sign-in",
+        path: "",
         element: <Login />,
       },
       {
-        path: "sign-up",
+        path: "auth/sign-up",
         element: <SignUp />,
       },
     ],
