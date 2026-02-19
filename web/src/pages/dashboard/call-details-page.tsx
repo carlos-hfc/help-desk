@@ -3,7 +3,10 @@ import { CheckCircleIcon, Clock2Icon, PlusIcon, TrashIcon } from "lucide-react"
 import { Avatar } from "@/components/avatar"
 import { Button } from "@/components/button"
 import { CallStatus } from "@/components/call-status"
+import { Dialog, DialogTrigger } from "@/components/dialog"
 import { PageTitle } from "@/components/page-title"
+
+import { DialogAdditionalService } from "./dialog-additional-service"
 
 export function CallDetailsPage() {
   return (
@@ -116,12 +119,18 @@ export function CallDetailsPage() {
               Serviços adicionais
             </span>
 
-            <Button
-              icon
-              size="sm"
-            >
-              <PlusIcon />
-            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button
+                  icon
+                  size="sm"
+                >
+                  <PlusIcon />
+                </Button>
+              </DialogTrigger>
+
+              <DialogAdditionalService />
+            </Dialog>
           </div>
 
           <div className="divide-y divide-gray-500">
