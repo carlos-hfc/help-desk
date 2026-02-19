@@ -8,9 +8,7 @@ import {
 } from "@radix-ui/react-dropdown-menu"
 import {
   BriefcaseBusinessIcon,
-  CircleUserIcon,
   ClipboardListIcon,
-  LogOutIcon,
   MenuIcon,
   PlusIcon,
   UsersIcon,
@@ -19,7 +17,11 @@ import {
 
 import logolight from "@/assets/logo-light.png"
 
+import { Avatar } from "./avatar"
 import { Button } from "./button"
+import { Dialog } from "./dialog"
+import { DialogProfile } from "./dialog-profile"
+import { MenuProfile } from "./menu-profile"
 import { NavLink } from "./nav-link"
 
 export function Header() {
@@ -131,87 +133,68 @@ export function Header() {
           </NavLink>
         </nav>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <div className="w-full border-t border-gray-200 px-4 py-5 hidden lg:flex items-center gap-3 hover:bg-gray-200 mt-auto">
-              <div className="rounded-full bg-blue-dark size-10 text-gray-600 content-center text-center">
-                UA
+        <Dialog>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <div className="w-full border-t border-gray-200 px-4 py-5 hidden lg:flex items-center gap-3 hover:bg-gray-200 mt-auto cursor-default">
+                <Avatar
+                  alt="Carlos Faustino"
+                  className="size-10 text-base"
+                />
+
+                <div className="hidden lg:block">
+                  <span className="block text-gray-600 text-sm">
+                    Usuario admin
+                  </span>
+                  <span className="block text-gray-400 text-xs">
+                    admin@email.com
+                  </span>
+                </div>
               </div>
+            </DropdownMenuTrigger>
 
-              <div className="hidden lg:block">
-                <span className="block text-gray-600 text-sm">
-                  Usuario admin
-                </span>
-                <span className="block text-gray-400 text-xs">
-                  admin@email.com
-                </span>
+            <DropdownMenuPortal>
+              <DropdownMenuContent
+                asChild
+                side="right"
+                sideOffset={16}
+              >
+                <MenuProfile className="w-48" />
+              </DropdownMenuContent>
+            </DropdownMenuPortal>
+          </DropdownMenu>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <div className="lg:hidden flex items-center gap-3">
+                <Avatar
+                  alt="Carlos Faustino"
+                  className="size-10 text-base"
+                />
+
+                <div className="hidden lg:block">
+                  <span className="block text-gray-600 text-sm">
+                    Usuario admin
+                  </span>
+                  <span className="block text-gray-400 text-xs">
+                    admin@email.com
+                  </span>
+                </div>
               </div>
-            </div>
-          </DropdownMenuTrigger>
+            </DropdownMenuTrigger>
 
-          <DropdownMenuPortal>
-            <DropdownMenuContent
-              asChild
-              side="right"
-              sideOffset={16}
-            >
-              <nav className="flex flex-col gap-0.5 me-5 w-48 p-5 bg-gray-100 rounded-lg">
-                <DropdownMenuLabel className="uppercase text-gray-400 text-xs font-bold mb-4">
-                  Opções
-                </DropdownMenuLabel>
+            <DropdownMenuPortal>
+              <DropdownMenuContent
+                asChild
+                sideOffset={16}
+              >
+                <MenuProfile className="w-[calc(100vw-40px)]" />
+              </DropdownMenuContent>
+            </DropdownMenuPortal>
+          </DropdownMenu>
 
-                <DropdownMenuItem className="flex h-10 items-center gap-3 text-gray-600 text-sm px-0 [&>svg]:size-5 w-full outline-none rounded-md">
-                  <CircleUserIcon />
-                  Perfil
-                </DropdownMenuItem>
-                <DropdownMenuItem className="flex h-10 items-center gap-3 text-feedback-danger text-sm px-0 [&>svg]:size-5 w-full outline-none rounded-md">
-                  <LogOutIcon />
-                  Sair
-                </DropdownMenuItem>
-              </nav>
-            </DropdownMenuContent>
-          </DropdownMenuPortal>
-        </DropdownMenu>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <div className="lg:hidden flex items-center gap-3">
-              <div className="rounded-full bg-blue-dark size-10 text-gray-600 content-center text-center">
-                UA
-              </div>
-
-              <div className="hidden lg:block">
-                <span className="block text-gray-600 text-sm">
-                  Usuario admin
-                </span>
-                <span className="block text-gray-400 text-xs">
-                  admin@email.com
-                </span>
-              </div>
-            </div>
-          </DropdownMenuTrigger>
-
-          <DropdownMenuPortal>
-            <DropdownMenuContent
-              asChild
-              sideOffset={16}
-            >
-              <nav className="flex flex-col gap-0.5 me-5 w-[calc(100vw-40px)] p-5 bg-gray-100 rounded-lg">
-                <span className="uppercase text-gray-400 text-xs font-bold mb-4">
-                  Opções
-                </span>
-                <span className="flex h-10 items-center gap-3 text-gray-600 text-sm px-0 [&>svg]:size-5 w-full rounded-md">
-                  <CircleUserIcon />
-                  Perfil
-                </span>
-                <span className="flex h-10 items-center gap-3 text-feedback-danger text-sm px-0 [&>svg]:size-5 w-full rounded-md">
-                  <LogOutIcon />
-                  Sair
-                </span>
-              </nav>
-            </DropdownMenuContent>
-          </DropdownMenuPortal>
-        </DropdownMenu>
+          <DialogProfile />
+        </Dialog>
       </div>
     </header>
   )
