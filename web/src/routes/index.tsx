@@ -13,24 +13,11 @@ import { TechnicianDetailsPage } from "@/pages/technicians/technician-details-pa
 
 export const routes = createBrowserRouter([
   {
-    path: "",
-    element: <AuthLayout />,
-    children: [
-      {
-        path: "",
-        element: <Login />,
-      },
-      {
-        path: "auth/sign-up",
-        element: <SignUp />,
-      },
-    ],
-  },
-  {
+    path: "/",
     element: <AppLayout />,
     children: [
       {
-        path: "dashboard",
+        path: "",
         children: [
           {
             index: true,
@@ -66,6 +53,20 @@ export const routes = createBrowserRouter([
       {
         path: "services",
         element: <Services />,
+      },
+    ],
+  },
+  {
+    path: "/",
+    element: <AuthLayout />,
+    children: [
+      {
+        path: "/auth/sign-in",
+        element: <Login />,
+      },
+      {
+        path: "/auth/sign-up",
+        element: <SignUp />,
       },
     ],
   },

@@ -49,7 +49,7 @@ export function Header() {
                 </DropdownMenuLabel>
 
                 <DropdownMenuItem asChild>
-                  <NavLink to="/dashboard">
+                  <NavLink to="/">
                     <ClipboardListIcon />
                     Chamados
                   </NavLink>
@@ -73,13 +73,13 @@ export function Header() {
                   </NavLink>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <NavLink to="/">
+                  <NavLink to="/calls">
                     <ClipboardListIcon />
                     Meus chamados
                   </NavLink>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <NavLink to="/">
+                  <NavLink to="/calls">
                     <PlusIcon />
                     Criar chamado
                   </NavLink>
@@ -107,7 +107,7 @@ export function Header() {
         </div>
 
         <nav className="hidden lg:flex flex-col gap-0.5 w-full p-4 bg-gray-100 rounded-lg">
-          <NavLink to="/dashboard">
+          <NavLink to="/">
             <ClipboardListIcon />
             Chamados
           </NavLink>
@@ -123,11 +123,11 @@ export function Header() {
             <WrenchIcon />
             Serviços
           </NavLink>
-          <NavLink to="/">
+          <NavLink to="/calls">
             <ClipboardListIcon />
             Meus chamados
           </NavLink>
-          <NavLink to="/">
+          <NavLink to="/calls">
             <PlusIcon />
             Criar chamado
           </NavLink>
