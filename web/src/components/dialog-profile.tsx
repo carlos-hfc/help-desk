@@ -1,11 +1,15 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { TrashIcon, UploadIcon } from "lucide-react"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 import z from "zod"
 
 import { useAuth } from "@/contexts/auth"
-import { getProfile } from "@/http/get-profile"
+import { getProfile, type GetProfileResponse } from "@/http/get-profile"
+import { updateProfile } from "@/http/update-profile"
+import { queryClient } from "@/lib/react-query"
 import { hours } from "@/utils/hours"
 
 import { Avatar } from "./avatar"
@@ -33,12 +37,18 @@ type ProfileSchema = z.infer<typeof profileSchema>
 export function DialogProfile() {
   const { IS_TECHNICIAN } = useAuth()
 
+  const [open, setOpen] = useState(false)
+
   const { data } = useQuery({
     queryKey: ["profile"],
     queryFn: getProfile,
   })
 
-  const { register } = useForm<ProfileSchema>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<ProfileSchema>({
     resolver: zodResolver(profileSchema),
     values: {
       email: data?.user.email ?? "",
@@ -46,9 +56,44 @@ export function DialogProfile() {
     },
   })
 
+  const { mutateAsync: updateProfileFn } = useMutation({
+    mutationFn: updateProfile,
+    onSuccess(_, { name, email }) {
+      toast.success("Perfil atualizado com sucesso")
+
+      const cached = queryClient.getQueryData<GetProfileResponse>(["profile"])
+
+      if (cached) {
+        queryClient.setQueryData<GetProfileResponse>(["profile"], {
+          ...cached,
+          user: {
+            ...cached.user,
+            name: String(name ?? data?.user.name),
+            email: String(email ?? data?.user.email),
+          },
+        })
+      }
+    },
+    onError() {
+      toast.error(
+        "Erro ao atualizar o perfil. Verifique as informações e tente novamente",
+      )
+    },
+  })
+
+  async function handleUpdateProfile({ email, name }: ProfileSchema) {
+    await updateProfileFn({
+      email,
+      name,
+    })
+  }
+
   return (
-    <DialogContent asChild>
-      <form>
+    <DialogContent
+      asChild
+      aria-describedby={undefined}
+    >
+      <form onSubmit={handleSubmit(handleUpdateProfile)}>
         <DialogHeader>
           <DialogTitle>Perfil</DialogTitle>
         </DialogHeader>
@@ -84,12 +129,16 @@ export function DialogProfile() {
           <div className="space-y-4">
             <Input
               label="Nome"
+              error={Boolean(errors.name)}
+              helperText={errors.name?.message}
               {...register("name")}
             />
 
             <Input
               label="E-mail"
               type="email"
+              error={Boolean(errors.email)}
+              helperText={errors.email?.message}
               {...register("email")}
             />
 
@@ -101,7 +150,10 @@ export function DialogProfile() {
                 readOnly
               />
 
-              <Dialog>
+              <Dialog
+                open={open}
+                onOpenChange={setOpen}
+              >
                 <DialogTrigger asChild>
                   <Button
                     size="sm"
@@ -112,7 +164,7 @@ export function DialogProfile() {
                   </Button>
                 </DialogTrigger>
 
-                <DialogUpdatePassword />
+                <DialogUpdatePassword setOpen={setOpen} />
               </Dialog>
             </div>
           </div>
@@ -141,7 +193,7 @@ export function DialogProfile() {
         )}
 
         <DialogFooter>
-          <Button>Salvar</Button>
+          <Button disabled={isSubmitting}>Salvar</Button>
         </DialogFooter>
       </form>
     </DialogContent>

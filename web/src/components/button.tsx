@@ -17,7 +17,7 @@ export function Button({
     <button
       {...props}
       className={cn(
-        "rounded-sm flex items-center justify-center gap-2 font-bold text-sm cursor-pointer disabled:pointer-events-none transition",
+        "rounded-sm flex items-center justify-center gap-2 font-bold text-sm cursor-pointer disabled:opacity-70 disabled:pointer-events-none transition",
         size === "md" && "px-4 h-10 [&>svg]:size-4.5",
         size === "sm" && "px-2 h-7 [&>svg]:size-3.5",
         variant === "primary" && "bg-gray-200 text-gray-600 hover:bg-gray-100",
