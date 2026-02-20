@@ -2,8 +2,12 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
 } from "@radix-ui/react-dropdown-menu"
+import { useMutation } from "@tanstack/react-query"
 import { CircleUserIcon, LogOutIcon } from "lucide-react"
+import { useNavigate } from "react-router"
 
+import { signOut } from "@/http/sign-out"
+import { queryClient } from "@/lib/react-query"
 import { cn } from "@/utils/cn"
 
 import { DialogTrigger } from "./dialog"
@@ -12,6 +16,16 @@ export function MenuProfile({
   className,
   ...props
 }: React.ComponentProps<"nav">) {
+  const navigate = useNavigate()
+
+  const { mutateAsync: signOutFn } = useMutation({
+    mutationFn: signOut,
+    onSuccess() {
+      queryClient.clear()
+      navigate("/auth/sign-in", { replace: true })
+    },
+  })
+
   return (
     <nav
       className={cn(
@@ -30,7 +44,10 @@ export function MenuProfile({
           Perfil
         </DropdownMenuItem>
       </DialogTrigger>
-      <DropdownMenuItem className="cursor-default flex items-center gap-3 text-feedback-danger text-sm [&>svg]:size-5 w-full rounded-md hover:bg-gray-200 p-3 focus:bg-gray-200 outline-none">
+      <DropdownMenuItem
+        onClick={() => signOutFn()}
+        className="cursor-default flex items-center gap-3 text-feedback-danger text-sm [&>svg]:size-5 w-full rounded-md hover:bg-gray-200 p-3 focus:bg-gray-200 outline-none"
+      >
         <LogOutIcon />
         Sair
       </DropdownMenuItem>

@@ -1,11 +1,10 @@
 import { createContext, type PropsWithChildren, use, useState } from "react"
 
-import type { User } from "@/@types/user"
+import type { Role } from "@/@types/user"
 
 export interface AuthContextProps {
-  user: User | null
-  save(data: User): void
-  remove(): void
+  save(data: Role): void
+  role: Role | null
 }
 
 export const AuthContext = createContext({} as AuthContextProps)
@@ -13,14 +12,14 @@ export const AuthContext = createContext({} as AuthContextProps)
 export const useAuth = () => use(AuthContext)
 
 export function AuthProvider({ children }: PropsWithChildren) {
-  const [user, setUser] = useState<User | null>(null)
+  const [role, setRole] = useState<Role | null>(null)
 
-  function save(data: User) {}
-
-  function remove() {}
+  function save(role: Role) {
+    setRole(role)
+  }
 
   return (
-    <AuthContext.Provider value={{ remove, save, user }}>
+    <AuthContext.Provider value={{ save, role }}>
       {children}
     </AuthContext.Provider>
   )
