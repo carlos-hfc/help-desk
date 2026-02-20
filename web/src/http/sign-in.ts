@@ -1,4 +1,4 @@
-import type { Role } from "@/@types/user"
+import { Role } from "@/@types/enums"
 import { api } from "@/lib/axios"
 
 export interface SignInRequest {
@@ -7,7 +7,7 @@ export interface SignInRequest {
 }
 
 export interface SignInResponse {
-  role: Role
+  role: typeof Role
 }
 
 export async function signIn({ email, password }: SignInRequest) {

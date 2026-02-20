@@ -6,6 +6,7 @@ import {
   DropdownMenuPortal,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu"
+import { useQuery } from "@tanstack/react-query"
 import {
   BriefcaseBusinessIcon,
   ClipboardListIcon,
@@ -16,6 +17,9 @@ import {
 } from "lucide-react"
 
 import logolight from "@/assets/logo-light.png"
+import { useAuth } from "@/contexts/auth"
+import { getProfile } from "@/http/get-profile"
+import { showRoleUser } from "@/utils/show-role-user"
 
 import { Avatar } from "./avatar"
 import { Button } from "./button"
@@ -25,6 +29,13 @@ import { MenuProfile } from "./menu-profile"
 import { NavLink } from "./nav-link"
 
 export function Header() {
+  const { role } = useAuth()
+
+  const { data } = useQuery({
+    queryKey: ["profile"],
+    queryFn: getProfile,
+  })
+
   return (
     <header className="bg-gray-100 p-6 lg:p-0 w-full h-dvh">
       <div className="lg:w-52 flex items-center lg:items-start lg:flex-col gap-4 lg:h-full relative">
@@ -101,7 +112,7 @@ export function Header() {
               HelpDesk
             </span>
             <span className="block text-blue-light font-bold text-xs uppercase">
-              Admin
+              {showRoleUser[role]}
             </span>
           </div>
         </div>
@@ -138,16 +149,17 @@ export function Header() {
             <DropdownMenuTrigger asChild>
               <div className="w-full border-t border-gray-200 px-4 py-5 hidden lg:flex items-center gap-3 hover:bg-gray-200 mt-auto cursor-default">
                 <Avatar
-                  alt="Carlos Faustino"
+                  avatar={data?.user.image}
+                  alt={data?.user.name ?? ""}
                   className="size-10 text-base"
                 />
 
                 <div className="hidden lg:block">
                   <span className="block text-gray-600 text-sm">
-                    Usuario admin
+                    {data?.user.name}
                   </span>
                   <span className="block text-gray-400 text-xs">
-                    admin@email.com
+                    {data?.user.email}
                   </span>
                 </div>
               </div>
@@ -168,7 +180,8 @@ export function Header() {
             <DropdownMenuTrigger asChild>
               <div className="lg:hidden flex items-center gap-3">
                 <Avatar
-                  alt="Carlos Faustino"
+                  avatar={data?.user.image}
+                  alt={data?.user.name ?? ""}
                   className="size-10 text-base"
                 />
 

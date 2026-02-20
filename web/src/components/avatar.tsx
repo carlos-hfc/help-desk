@@ -1,7 +1,7 @@
 import { cn } from "@/utils/cn"
 
 interface AvatarProps extends React.PropsWithChildren {
-  avatar?: string
+  avatar?: string | null
   alt: string
   className?: string
 }
