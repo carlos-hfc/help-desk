@@ -1,6 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useMutation } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router"
+import { toast } from "sonner"
 import z from "zod"
 
 import { Button } from "@/components/button"
@@ -28,14 +30,24 @@ export function Login() {
     resolver: zodResolver(signInSchema),
   })
 
+  const { mutateAsync: signInFn } = useMutation({
+    mutationFn: signIn,
+    onSuccess({ role }) {
+      save(role)
+      navigate("/", { replace: true })
+    },
+    onError() {
+      toast.error("Erro ao efetuar o login", {
+        description: "Verifique as credenciais e tente novamente",
+      })
+    },
+  })
+
   async function handleSignIn({ email, password }: SignInSchema) {
-    const { role } = await signIn({
+    await signInFn({
       email,
       password,
     })
-
-    save(role)
-    navigate("/", { replace: true })
   }
 
   return (
