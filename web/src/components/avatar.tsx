@@ -25,7 +25,7 @@ export function Avatar({ alt, avatar, children, className }: AvatarProps) {
           <img
             src={avatar}
             alt={alt}
-            className="rounded-full object-cover"
+            className="rounded-full object-cover size-full"
           />
         ) : (
           fallback

@@ -1,12 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { TrashIcon, UploadIcon } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import z from "zod"
 
 import { useAuth } from "@/contexts/auth"
+import { addProfileImage } from "@/http/add-profile-image"
 import { getProfile, type GetProfileResponse } from "@/http/get-profile"
 import { updateProfile } from "@/http/update-profile"
 import { queryClient } from "@/lib/react-query"
@@ -38,6 +39,7 @@ export function DialogProfile() {
   const { IS_TECHNICIAN } = useAuth()
 
   const [open, setOpen] = useState(false)
+  const [profileImage, setProfileImage] = useState<FileList | null>(null)
 
   const { data } = useQuery({
     queryKey: ["profile"],
@@ -81,12 +83,52 @@ export function DialogProfile() {
     },
   })
 
+  const { mutateAsync: addProfileImageFn } = useMutation({
+    mutationFn: addProfileImage,
+    onSuccess({ image }) {
+      toast.success("Foto de perfil atualizada com sucesso")
+
+      const cached = queryClient.getQueryData<GetProfileResponse>(["profile"])
+
+      if (cached) {
+        queryClient.setQueryData<GetProfileResponse>(["profile"], {
+          ...cached,
+          user: {
+            ...cached.user,
+            image,
+          },
+        })
+
+        setProfileImage(null)
+      }
+    },
+    onError() {
+      toast.error(
+        "Erro ao atualizar o perfil. Verifique as informações e tente novamente",
+      )
+    },
+  })
+
+  useEffect(() => {
+    if (profileImage) {
+      async function handleUpdateProfileImage(file: FileList) {
+        await addProfileImageFn({ file: file[0] })
+      }
+
+      handleUpdateProfileImage(profileImage)
+    }
+  }, [addProfileImageFn, profileImage])
+
   async function handleUpdateProfile({ email, name }: ProfileSchema) {
     await updateProfileFn({
       email,
       name,
     })
   }
+
+  const avatar = useMemo(() => {
+    return profileImage ? URL.createObjectURL(profileImage[0]) : null
+  }, [profileImage])
 
   return (
     <DialogContent
@@ -101,7 +143,7 @@ export function DialogProfile() {
         <DialogBody className="grid gap-5">
           <div className="flex items-center gap-3">
             <Avatar
-              avatar={data?.user.image}
+              avatar={avatar ?? data?.user.image}
               alt={data?.user.name ?? ""}
               className="size-12 text-lg"
             />
@@ -111,7 +153,14 @@ export function DialogProfile() {
                 type="button"
                 variant="secondary"
                 size="sm"
+                className="relative"
               >
+                <input
+                  type="file"
+                  accept="image/png, image/jpg, image/jpeg, image/webp"
+                  className="absolute size-full opacity-0"
+                  onChange={e => setProfileImage(e.target.files)}
+                />
                 <UploadIcon />
                 Nova imagem
               </Button>
