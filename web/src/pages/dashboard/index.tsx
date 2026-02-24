@@ -21,7 +21,7 @@ export function Dashboard() {
       <Table>
         <CallsTableHead />
 
-        <TableBody className="[&_tr:last-child]:border-0">
+        <TableBody>
           {isLoading && <CallsTableSkeleton />}
 
           {data?.calls.map(call => (

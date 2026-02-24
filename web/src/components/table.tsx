@@ -8,7 +8,7 @@ export function Table({ containerClassName, className, ...props }: TableProps) {
   return (
     <div
       className={cn(
-        "w-full relative overflow-x-auto border border-gray-500 rounded-xl [&_tr]:border-b [&_tr]:border-gray-500",
+        "w-full relative overflow-x-auto border border-gray-500 rounded-xl",
         containerClassName,
       )}
     >
@@ -27,7 +27,10 @@ export function TableBody({
   return (
     <tbody
       {...props}
-      className={cn("[&_tr:last-child]:border-0", className)}
+      className={cn(
+        "[&_tr]:border-y [&_tr]:border-gray-500 [&_tr:last-child]:border-b-0",
+        className,
+      )}
     />
   )
 }

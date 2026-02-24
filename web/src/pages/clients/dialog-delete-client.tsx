@@ -1,3 +1,6 @@
+import { useMutation } from "@tanstack/react-query"
+import { toast } from "sonner"
+
 import { Button } from "@/components/button"
 import {
   DialogBody,
@@ -8,8 +11,34 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/dialog"
+import { deleteClient } from "@/http/delete-client"
+import type { Client, ListClientsResponse } from "@/http/list-clients"
+import { queryClient } from "@/lib/react-query"
 
-export function DialogDeleteClient() {
+interface DialogDeleteClientProps {
+  client: Client
+}
+
+export function DialogDeleteClient({ client }: DialogDeleteClientProps) {
+  const { mutateAsync: deleteClientFn } = useMutation({
+    mutationFn: deleteClient,
+    onSuccess(_, { id }) {
+      toast.success("Cliente excluído com sucesso")
+
+      const cached = queryClient.getQueryData<ListClientsResponse>(["clients"])
+
+      if (cached) {
+        queryClient.setQueryData<ListClientsResponse>(["clients"], {
+          ...cached,
+          clients: cached.clients.filter(client => client.id !== id),
+        })
+      }
+    },
+    onError() {
+      toast.error("Erro ao excluir cliente. Tente novamente")
+    },
+  })
+
   return (
     <DialogContent>
       <DialogHeader>
@@ -18,7 +47,7 @@ export function DialogDeleteClient() {
 
       <DialogBody className="space-y-5">
         <p>
-          Deseja realmente excluir <strong>Carlos Faustino</strong>?
+          Deseja realmente excluir <strong>{client.name}</strong>?
         </p>
 
         <DialogDescription>
@@ -31,7 +60,9 @@ export function DialogDeleteClient() {
         <DialogClose asChild>
           <Button variant="secondary">Cancelar</Button>
         </DialogClose>
-        <Button>Sim, excluir</Button>
+        <Button onClick={() => deleteClientFn({ id: client.id })}>
+          Sim, excluir
+        </Button>
       </DialogFooter>
     </DialogContent>
   )

@@ -38,7 +38,7 @@ export function ClientsTableRow({ client }: ClientsTableRowProps) {
         </TableCell>
       </TableRow>
 
-      <DialogDeleteClient />
+      <DialogDeleteClient client={client} />
     </Dialog>
   )
 }
