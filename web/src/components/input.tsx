@@ -27,8 +27,8 @@ export function Input({
       >
         {label}
       </label>
-      <div className="border-b border-b-gray-500 group-focus-within:border-blue-base py-2">
-        {adornment && <span className="me-2 text-gray-100">{adornment}</span>}
+      <div className="border-b border-b-gray-500 group-focus-within:border-blue-base py-2 flex gap-2">
+        {adornment && <span className="text-gray-100">{adornment}</span>}
 
         <input
           {...props}
