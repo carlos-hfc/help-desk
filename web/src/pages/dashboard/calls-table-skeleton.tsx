@@ -2,8 +2,8 @@ import { Skeleton } from "@/components/skeleton"
 import { TableCell, TableRow } from "@/components/table"
 
 export function CallsTableSkeleton() {
-  return (
-    <TableRow>
+  return Array.from({ length: 5 }).map((_, i) => (
+    <TableRow key={i}>
       <TableCell className="text-xs">
         <Skeleton />
       </TableCell>
@@ -34,5 +34,5 @@ export function CallsTableSkeleton() {
         <Skeleton className="size-6" />
       </TableCell>
     </TableRow>
-  )
+  ))
 }
