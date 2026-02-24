@@ -1,6 +1,7 @@
 import { FastifyPluginAsyncZod } from "fastify-type-provider-zod"
 import z from "zod"
 
+import { UserRole } from "@/generated/prisma/enums"
 import { auth } from "@/middlewares/auth"
 
 export const getProfile: FastifyPluginAsyncZod = async app => {
@@ -18,6 +19,7 @@ export const getProfile: FastifyPluginAsyncZod = async app => {
                 id: z.uuid(),
                 name: z.string(),
                 email: z.email(),
+                role: z.enum(UserRole),
                 image: z.string().nullable(),
               }),
             })
