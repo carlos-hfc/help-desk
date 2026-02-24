@@ -34,6 +34,7 @@ import { createPassword } from "./routes/session/create-password"
 import { register } from "./routes/session/register"
 import { signOut } from "./routes/session/sign-out"
 import { editAvailability } from "./routes/technician/edit-availability"
+import { getTechnician } from "./routes/technician/get-technician"
 import { listCallsByTechnician } from "./routes/technician/list-calls-by-technician"
 import { listTechnicians } from "./routes/technician/list-technicians"
 import { registerTechnician } from "./routes/technician/register-technician"
@@ -109,6 +110,7 @@ app.register(listTechnicians)
 app.register(registerTechnician)
 app.register(editAvailability)
 app.register(listCallsByTechnician)
+app.register(getTechnician)
 
 app.register(listClients)
 app.register(removeClient)
