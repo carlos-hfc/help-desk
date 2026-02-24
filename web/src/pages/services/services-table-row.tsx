@@ -1,22 +1,30 @@
-import { BanIcon, PenLineIcon } from "lucide-react"
+import { BanIcon, CheckCircle2Icon, PenLineIcon } from "lucide-react"
 
 import { Button } from "@/components/button"
 import { Dialog, DialogTrigger } from "@/components/dialog"
 import { Status } from "@/components/status"
 import { TableCell, TableRow } from "@/components/table"
+import type { Service } from "@/http/list-services"
+import { formatCurrency } from "@/utils/format-currency"
 
 import { DialogService } from "./dialog-service"
 
-export function ServicesTableRow() {
+interface ServicesTableRowProps {
+  service: Service
+}
+
+export function ServicesTableRow({ service }: ServicesTableRowProps) {
   return (
     <Dialog>
       <TableRow>
         <TableCell className="font-bold">
-          <span className="line-clamp-1">Instalacao de rede</span>
+          <span className="line-clamp-1">{service.name}</span>
         </TableCell>
-        <TableCell className="truncate">R$ 180.00</TableCell>
+        <TableCell className="truncate">
+          {formatCurrency(service.price)}
+        </TableCell>
         <TableCell>
-          <Status />
+          <Status active={service.isActive} />
         </TableCell>
         <TableCell>
           <div className="flex items-center gap-2">
@@ -24,14 +32,18 @@ export function ServicesTableRow() {
               variant="link"
               size="sm"
               icon
+              aria-label={
+                service.isActive ? "Inativar serviço" : "Ativar serviço"
+              }
             >
-              <BanIcon />
+              {service.isActive ? <BanIcon /> : <CheckCircle2Icon />}
             </Button>
             <DialogTrigger asChild>
               <Button
                 variant="link"
                 size="sm"
                 icon
+                aria-label="Editar serviço"
               >
                 <PenLineIcon />
               </Button>
