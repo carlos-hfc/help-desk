@@ -1,8 +1,7 @@
 import { CircleCheckBigIcon, CircleHelpIcon, Clock2Icon } from "lucide-react"
 
+import type { CallStatusType } from "@/http/list-calls"
 import { cn } from "@/utils/cn"
-
-type CallStatusType = "OPEN" | "IN_PROGRESS" | "CLOSED"
 
 interface CallStatusProps {
   status: CallStatusType

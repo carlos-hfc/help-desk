@@ -5,36 +5,54 @@ import { Avatar } from "@/components/avatar"
 import { Button } from "@/components/button"
 import { CallStatus } from "@/components/call-status"
 import { TableCell, TableRow } from "@/components/table"
+import type { Call } from "@/http/list-calls"
+import { formatCurrency } from "@/utils/format-currency"
 
-export function CallsTableRow() {
+interface CallsTableRowProps {
+  call: Call
+}
+
+export function CallsTableRow({ call }: CallsTableRowProps) {
   const navigate = useNavigate()
 
   return (
     <TableRow>
-      <TableCell className="text-xs">13/04/25 20:20</TableCell>
+      <TableCell className="text-xs">{call.updatedAt}</TableCell>
       <TableCell className="text-xs font-bold hidden lg:table-cell">
-        0003
+        {call.protocol}
       </TableCell>
       <TableCell>
-        <span className="block font-bold">Rede lenta</span>
-        <span className="block text-xs">Instacao de rede</span>
-      </TableCell>
-      <TableCell className="hidden lg:table-cell">R$ 180,00</TableCell>
-      <TableCell className="hidden lg:table-cell">
-        <Avatar alt="Carlos Faustino">Carlos Faustino</Avatar>
+        <span className="block font-bold">{call.title}</span>
+        <span className="block text-xs">{call.service}</span>
       </TableCell>
       <TableCell className="hidden lg:table-cell">
-        <Avatar alt="Carlos Faustino">Carlos Faustino</Avatar>
+        {formatCurrency(call.totalValue)}
+      </TableCell>
+      <TableCell className="hidden lg:table-cell">
+        <Avatar
+          avatar={call.client.image}
+          alt={call.client.name}
+        >
+          {call.client.name}
+        </Avatar>
+      </TableCell>
+      <TableCell className="hidden lg:table-cell">
+        <Avatar
+          avatar={call.technician.image}
+          alt={call.technician.name}
+        >
+          {call.technician.name}
+        </Avatar>
       </TableCell>
       <TableCell>
-        <CallStatus status="OPEN" />
+        <CallStatus status={call.status} />
       </TableCell>
       <TableCell>
         <Button
           variant="link"
           size="sm"
           icon
-          onClick={() => navigate("/dashboard/1")}
+          onClick={() => navigate(`/${call.id}`)}
         >
           <EyeIcon className="text-gray-200" />
         </Button>
