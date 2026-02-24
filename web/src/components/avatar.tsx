@@ -17,7 +17,7 @@ export function Avatar({ alt, avatar, children, className }: AvatarProps) {
     <div className="flex items-center gap-2 cursor-default">
       <div
         className={cn(
-          "rounded-full bg-blue-dark size-7 text-gray-600 content-center text-center text-xs",
+          "rounded-full bg-blue-dark size-7 text-gray-600 content-center text-center text-xs shrink-0",
           className,
         )}
       >
