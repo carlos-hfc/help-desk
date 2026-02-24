@@ -27,7 +27,7 @@ export const registerTechnician: FastifyPluginAsyncZod = async app => {
         body: z.object({
           name: z.string().nonempty(),
           email: z.email(),
-          hours: z.array(z.string()),
+          hours: z.array(z.string()).nonempty(),
         }),
         response: {
           201: z

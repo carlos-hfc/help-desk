@@ -7,13 +7,13 @@ import { Button } from "./button"
 
 interface PageTitleProps extends React.PropsWithChildren {
   title: string
-  hasBackButton?: boolean
+  backButton?: string | boolean
   className?: string
 }
 
 export function PageTitle({
   title,
-  hasBackButton = false,
+  backButton,
   className,
   children,
 }: PageTitleProps) {
@@ -24,15 +24,17 @@ export function PageTitle({
       className={cn(
         "flex flex-col lg:flex-row lg:items-center justify-between gap-3",
         className,
-        hasBackButton && "lg:items-end",
+        backButton && "lg:items-end",
       )}
     >
       <div className="space-y-1">
-        {hasBackButton && (
+        {backButton && (
           <Button
             variant="link"
             size="sm"
-            onClick={() => navigate("/dashboard")}
+            onClick={() =>
+              navigate(typeof backButton === "boolean" ? "/" : backButton)
+            }
           >
             <ArrowLeftIcon />
             Voltar
