@@ -1,10 +1,19 @@
+import { useQuery } from "@tanstack/react-query"
+
 import { PageTitle } from "@/components/page-title"
 import { Table, TableBody } from "@/components/table"
+import { listClients } from "@/http/list-clients"
 
 import { ClientsTableHead } from "./clients-table-head"
 import { ClientsTableRow } from "./clients-table-row"
+import { ClientsTableSkeleton } from "./clients-table-skeleton"
 
 export function Clients() {
+  const { data, isLoading } = useQuery({
+    queryKey: ["clients"],
+    queryFn: listClients,
+  })
+
   return (
     <>
       <PageTitle
@@ -16,8 +25,13 @@ export function Clients() {
         <ClientsTableHead />
 
         <TableBody>
-          {Array.from({ length: 5 }).map((_, i) => (
-            <ClientsTableRow key={i} />
+          {isLoading && <ClientsTableSkeleton />}
+
+          {data?.clients.map(client => (
+            <ClientsTableRow
+              key={client.id}
+              client={client}
+            />
           ))}
         </TableBody>
       </Table>

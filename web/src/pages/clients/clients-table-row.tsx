@@ -4,17 +4,27 @@ import { Avatar } from "@/components/avatar"
 import { Button } from "@/components/button"
 import { Dialog, DialogTrigger } from "@/components/dialog"
 import { TableCell, TableRow } from "@/components/table"
+import type { Client } from "@/http/list-clients"
 
 import { DialogDeleteClient } from "./dialog-delete-client"
 
-export function ClientsTableRow() {
+interface ClientsTableRowProps {
+  client: Client
+}
+
+export function ClientsTableRow({ client }: ClientsTableRowProps) {
   return (
     <Dialog>
       <TableRow>
         <TableCell>
-          <Avatar alt="Carlos Faustino">Carlos Faustino</Avatar>
+          <Avatar
+            avatar={client.image}
+            alt={client.name}
+          >
+            {client.name}
+          </Avatar>
         </TableCell>
-        <TableCell>email@email.com</TableCell>
+        <TableCell>{client.email}</TableCell>
         <TableCell>
           <DialogTrigger asChild>
             <Button
