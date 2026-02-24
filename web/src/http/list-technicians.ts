@@ -15,5 +15,11 @@ export interface ListTechniciansResponse {
 export async function listTechnicians() {
   const response = await api.get<ListTechniciansResponse>("/technicians")
 
-  return response.data
+  return {
+    ...response.data,
+    technicians: response.data.technicians.map(technician => ({
+      ...technician,
+      hours: technician.hours.sort(),
+    })),
+  }
 }

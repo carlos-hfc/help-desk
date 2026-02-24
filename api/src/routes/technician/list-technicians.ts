@@ -38,7 +38,12 @@ export const listTechnicians: FastifyPluginAsyncZod = async app => {
         },
       })
 
-      return reply.send({ technicians })
+      return reply.send({
+        technicians: technicians.map(technician => ({
+          ...technician,
+          hours: technician.hours.sort(),
+        })),
+      })
     },
   )
 }
