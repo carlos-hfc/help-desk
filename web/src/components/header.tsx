@@ -29,11 +29,16 @@ import { MenuProfile } from "./menu-profile"
 import { NavLink } from "./nav-link"
 
 export function Header() {
-  const { role } = useAuth()
+  const { role, IS_ADMIN, IS_TECHNICIAN, IS_CLIENT, save } = useAuth()
 
   const { data } = useQuery({
     queryKey: ["profile"],
-    queryFn: getProfile,
+    queryFn: async () => {
+      const profile = await getProfile()
+
+      save(profile.user.role)
+      return profile
+    },
   })
 
   return (
@@ -118,30 +123,46 @@ export function Header() {
         </div>
 
         <nav className="hidden lg:flex flex-col gap-0.5 w-full p-4 bg-gray-100 rounded-lg">
-          <NavLink to="/">
-            <ClipboardListIcon />
-            Chamados
-          </NavLink>
-          <NavLink to="/technicians">
-            <UsersIcon />
-            Técnicos
-          </NavLink>
-          <NavLink to="/clients">
-            <BriefcaseBusinessIcon />
-            Clientes
-          </NavLink>
-          <NavLink to="/services">
-            <WrenchIcon />
-            Serviços
-          </NavLink>
-          <NavLink to="/calls">
-            <ClipboardListIcon />
-            Meus chamados
-          </NavLink>
-          <NavLink to="/calls">
-            <PlusIcon />
-            Criar chamado
-          </NavLink>
+          {IS_ADMIN && (
+            <>
+              <NavLink to="/">
+                <ClipboardListIcon />
+                Chamados
+              </NavLink>
+              <NavLink to="/technicians">
+                <UsersIcon />
+                Técnicos
+              </NavLink>
+              <NavLink to="/clients">
+                <BriefcaseBusinessIcon />
+                Clientes
+              </NavLink>
+              <NavLink to="/services">
+                <WrenchIcon />
+                Serviços
+              </NavLink>
+            </>
+          )}
+
+          {IS_TECHNICIAN && (
+            <NavLink to="/">
+              <ClipboardListIcon />
+              Meus chamados
+            </NavLink>
+          )}
+
+          {IS_CLIENT && (
+            <>
+              <NavLink to="/">
+                <ClipboardListIcon />
+                Meus chamados
+              </NavLink>
+              <NavLink to="/calls">
+                <PlusIcon />
+                Criar chamado
+              </NavLink>
+            </>
+          )}
         </nav>
 
         <Dialog>

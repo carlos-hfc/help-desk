@@ -36,14 +36,19 @@ const profileSchema = z.object({
 type ProfileSchema = z.infer<typeof profileSchema>
 
 export function DialogProfile() {
-  const { IS_TECHNICIAN } = useAuth()
+  const { IS_TECHNICIAN, save } = useAuth()
 
   const [open, setOpen] = useState(false)
   const [profileImage, setProfileImage] = useState<FileList | null>(null)
 
   const { data } = useQuery({
     queryKey: ["profile"],
-    queryFn: getProfile,
+    queryFn: async () => {
+      const profile = await getProfile()
+
+      save(profile.user.role)
+      return profile
+    },
   })
 
   const {
