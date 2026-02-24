@@ -14,7 +14,7 @@ import { ServicesTableSkeleton } from "./services-table-skeleton"
 
 export function Services() {
   const { data, isLoading } = useQuery({
-    queryKey: ["service"],
+    queryKey: ["services"],
     queryFn: listServices,
   })
 

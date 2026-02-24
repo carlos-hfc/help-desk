@@ -2,8 +2,8 @@ import { Skeleton } from "@/components/skeleton"
 import { TableCell, TableRow } from "@/components/table"
 
 export function ServicesTableSkeleton() {
-  return (
-    <TableRow>
+  return Array.from({ length: 10 }).map((_, i) => (
+    <TableRow key={i}>
       <TableCell className="font-bold">
         <Skeleton />
       </TableCell>
@@ -20,5 +20,5 @@ export function ServicesTableSkeleton() {
         </div>
       </TableCell>
     </TableRow>
-  )
+  ))
 }

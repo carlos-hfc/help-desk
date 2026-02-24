@@ -33,7 +33,7 @@ export function Input({
         <input
           {...props}
           className={cn(
-            "placeholder:text-gray-400 text-gray-200 caret-blue-base outline-none w-full read-only:pointer-events-none",
+            "placeholder:text-gray-400 text-gray-200 caret-blue-base outline-none w-full read-only:pointer-events-none [&::-webkit-inner-spin-button]:hidden",
             className,
           )}
           id={id}
