@@ -47,9 +47,10 @@ describe("Add profile image from logged user [PATCH] /profile/image", () => {
       .set("Cookie", token)
       .attach("file", file, "image.jpg")
 
-    console.log(response.body)
-
     expect(response.status).toBe(413)
-    // expect(response.body).toHaveProperty("message","File type is invalid. Use JPEG, PNG or WEBP file")
+    expect(response.body).toHaveProperty(
+      "message",
+      "File size is too large. The image must be least 5 MB",
+    )
   })
 })
