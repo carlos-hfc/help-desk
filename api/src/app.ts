@@ -40,6 +40,7 @@ import { listTechnicians } from "./routes/technician/list-technicians"
 import { registerTechnician } from "./routes/technician/register-technician"
 import { addImageProfile } from "./routes/user/add-profile-image"
 import { getProfile } from "./routes/user/get-profile"
+import { removeProfileImage } from "./routes/user/remove-profile-image"
 import { updateProfile } from "./routes/user/update-profile"
 
 export const app = fastify().withTypeProvider<ZodTypeProvider>()
@@ -124,6 +125,7 @@ app.register(editService)
 app.register(getProfile)
 app.register(updateProfile)
 app.register(addImageProfile)
+app.register(removeProfileImage)
 
 app.register(createCall)
 app.register(updateCallStatus)
