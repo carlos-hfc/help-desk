@@ -9,6 +9,7 @@ import z from "zod"
 import { useAuth } from "@/contexts/auth"
 import { addProfileImage } from "@/http/add-profile-image"
 import { getProfile, type GetProfileResponse } from "@/http/get-profile"
+import { removeProfileImage } from "@/http/remove-profile-image"
 import { updateProfile } from "@/http/update-profile"
 import { queryClient } from "@/lib/react-query"
 import { hours } from "@/utils/hours"
@@ -88,7 +89,10 @@ export function DialogProfile() {
     },
   })
 
-  const { mutateAsync: addProfileImageFn } = useMutation({
+  const {
+    mutateAsync: addProfileImageFn,
+    isPending: isPendingAddProfileImage,
+  } = useMutation({
     mutationFn: addProfileImage,
     onSuccess({ image }) {
       toast.success("Foto de perfil atualizada com sucesso")
@@ -108,9 +112,34 @@ export function DialogProfile() {
       }
     },
     onError() {
-      toast.error(
-        "Erro ao atualizar o perfil. Verifique as informações e tente novamente",
-      )
+      toast.error("Erro ao atualizar a foto de perfil. Tente novamente")
+    },
+  })
+
+  const {
+    mutateAsync: removeProfileImageFn,
+    isPending: isPendingRemoveProfileImage,
+  } = useMutation({
+    mutationFn: removeProfileImage,
+    onSuccess() {
+      toast.success("Foto de perfil removida com sucesso")
+
+      const cached = queryClient.getQueryData<GetProfileResponse>(["profile"])
+
+      if (cached) {
+        queryClient.setQueryData<GetProfileResponse>(["profile"], {
+          ...cached,
+          user: {
+            ...cached.user,
+            image: null,
+          },
+        })
+
+        setProfileImage(null)
+      }
+    },
+    onError() {
+      toast.error("Erro ao remover a foto de perfil. Tente novamente")
     },
   })
 
@@ -132,13 +161,17 @@ export function DialogProfile() {
   }
 
   const avatar = useMemo(() => {
-    return profileImage ? URL.createObjectURL(profileImage[0]) : null
+    return profileImage && profileImage.length > 0
+      ? URL.createObjectURL(profileImage[0])
+      : null
   }, [profileImage])
 
   return (
     <DialogContent
       asChild
       aria-describedby={undefined}
+      aria-disabled={isPendingAddProfileImage || isPendingRemoveProfileImage}
+      className="aria-disabled:opacity-80 aria-disabled:*:pointer-events-none"
     >
       <form onSubmit={handleSubmit(handleUpdateProfile)}>
         <DialogHeader>
@@ -158,12 +191,17 @@ export function DialogProfile() {
                 type="button"
                 variant="secondary"
                 size="sm"
-                className="relative"
+                className="relative cursor-pointer"
               >
+                <label
+                  htmlFor="profile-image"
+                  className="absolute size-full cursor-pointer"
+                />
                 <input
+                  hidden
+                  id="profile-image"
                   type="file"
                   accept="image/png, image/jpg, image/jpeg, image/webp"
-                  className="absolute size-full opacity-0"
                   onChange={e => setProfileImage(e.target.files)}
                 />
                 <UploadIcon />
@@ -174,6 +212,9 @@ export function DialogProfile() {
                 variant="secondary"
                 size="sm"
                 icon
+                aria-label="Excluir imagem"
+                disabled={data?.user.image === null}
+                onClick={() => removeProfileImageFn()}
               >
                 <TrashIcon className="text-feedback-danger" />
               </Button>
