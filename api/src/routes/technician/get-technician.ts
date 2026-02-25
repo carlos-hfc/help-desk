@@ -15,6 +15,7 @@ export const getTechnician: FastifyPluginAsyncZod = async app => {
       schema: {
         tags: ["technician"],
         summary: "Get a technician",
+        security: [{ cookieAuth: [] }],
         params: z.object({
           technicianId: z.uuid(),
         }),
