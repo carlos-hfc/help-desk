@@ -81,6 +81,7 @@ export function ServicesTableRow({ service }: ServicesTableRowProps) {
                 size="sm"
                 icon
                 aria-label="Editar serviço"
+                disabled={!service.isActive}
               >
                 <PenLineIcon />
               </Button>
@@ -89,7 +90,7 @@ export function ServicesTableRow({ service }: ServicesTableRowProps) {
         </TableCell>
       </TableRow>
 
-      <DialogService />
+      <DialogService service={service} />
     </Dialog>
   )
 }

@@ -13,8 +13,9 @@ import {
   DialogTitle,
 } from "@/components/dialog"
 import { Input } from "@/components/input"
-import type { ListServicesResponse } from "@/http/list-services"
+import type { ListServicesResponse, Service } from "@/http/list-services"
 import { registerService } from "@/http/register-service"
+import { updateService } from "@/http/update-service"
 import { queryClient } from "@/lib/react-query"
 
 const registerServiceSchema = z.object({
@@ -26,7 +27,11 @@ const registerServiceSchema = z.object({
 
 type RegisterServiceSchema = z.infer<typeof registerServiceSchema>
 
-export function DialogService() {
+interface DialogServiceProps {
+  service?: Service
+}
+
+export function DialogService({ service }: DialogServiceProps) {
   const {
     register,
     handleSubmit,
@@ -34,6 +39,10 @@ export function DialogService() {
     reset,
   } = useForm<RegisterServiceSchema>({
     resolver: zodResolver(registerServiceSchema),
+    values: {
+      name: service?.name ?? "",
+      price: service?.price ?? 1,
+    },
   })
 
   const { mutateAsync: registerServiceFn } = useMutation({
@@ -66,18 +75,60 @@ export function DialogService() {
     },
   })
 
+  const { mutateAsync: updateServiceFn } = useMutation({
+    mutationFn: updateService,
+    onSuccess(_, variables) {
+      toast.success("Serviço atualizado com sucesso!")
+
+      const cached = queryClient.getQueryData<ListServicesResponse>([
+        "services",
+      ])
+
+      if (cached) {
+        const services = cached.services.map(service => {
+          if (service.id === variables.id) {
+            return { ...service, ...variables }
+          }
+
+          return service
+        })
+
+        queryClient.setQueryData<ListServicesResponse>(["services"], {
+          ...cached,
+          services,
+        })
+      }
+    },
+    onError() {
+      toast.error("Erro ao atualizar o serviço. Tente novamente")
+    },
+  })
+
   async function handleStoreService({ name, price }: RegisterServiceSchema) {
+    if (service) {
+      return await updateServiceFn({
+        name,
+        price,
+        id: service.id,
+      })
+    }
+
     await registerServiceFn({ name, price })
   }
 
   return (
     <DialogContent
-      aria-describedby={undefined}
       asChild
+      aria-describedby={undefined}
+      onEscapeKeyDown={() => reset()}
+      onInteractOutside={() => reset()}
+      onPointerDownOutside={() => reset()}
     >
       <form onSubmit={handleSubmit(handleStoreService)}>
         <DialogHeader>
-          <DialogTitle>Cadastro de serviço</DialogTitle>
+          <DialogTitle>
+            {service ? "Edição do serviço" : "Cadastro do serviço"}
+          </DialogTitle>
         </DialogHeader>
 
         <DialogBody className="space-y-4">
@@ -95,6 +146,7 @@ export function DialogService() {
             type="number"
             error={Boolean(errors.price)}
             helperText={errors.price?.message}
+            step={0.01}
             {...register("price")}
           />
         </DialogBody>
