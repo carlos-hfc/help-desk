@@ -4,13 +4,11 @@ import z from "zod"
 import { CallStatus } from "@/generated/prisma/enums"
 import { prisma } from "@/lib/prisma"
 import { auth } from "@/middlewares/auth"
-import { verifyUserRole } from "@/middlewares/verify-user-role"
 
 export const listCalls: FastifyPluginAsyncZod = async app => {
   app.register(auth).get(
     "/calls",
     {
-      preHandler: [verifyUserRole("ADMIN")],
       schema: {
         tags: ["call"],
         summary: "List calls",
@@ -42,8 +40,14 @@ export const listCalls: FastifyPluginAsyncZod = async app => {
         },
       },
     },
-    async (_, reply) => {
+    async (request, reply) => {
+      const { id, role } = await request.getCurrentUser()
+
       const calls = await prisma.call.findMany({
+        where: {
+          technicianId: role === "TECHNICIAN" ? id : undefined,
+          clientId: role === "CLIENT" ? id : undefined,
+        },
         select: {
           id: true,
           protocol: true,
