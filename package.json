@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "turbo": "^2.8.11"
+  },
+  "workspaces": [
+    "*"
+  ],
+  "packageManager": "npm@11.4.2"
+}
