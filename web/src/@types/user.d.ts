@@ -6,4 +6,5 @@ export interface User {
   email: string
   image: string | null
   role: typeof Role
+  hours: string[]
 }

@@ -7,6 +7,7 @@ interface CurrentUser {
   name: string
   email: string
   role: UserRole
+  hours: string[]
   image: string | null
 }
 

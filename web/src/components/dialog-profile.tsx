@@ -12,7 +12,6 @@ import { getProfile, type GetProfileResponse } from "@/http/get-profile"
 import { removeProfileImage } from "@/http/remove-profile-image"
 import { updateProfile } from "@/http/update-profile"
 import { queryClient } from "@/lib/react-query"
-import { hours } from "@/utils/hours"
 
 import { Avatar } from "./avatar"
 import { Button } from "./button"
@@ -275,7 +274,7 @@ export function DialogProfile() {
             </header>
 
             <div className="flex items-center flex-wrap gap-1">
-              {hours.map(hour => (
+              {data?.user.hours.map(hour => (
                 <TagTime
                   key={hour}
                   aria-disabled

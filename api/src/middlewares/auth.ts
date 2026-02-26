@@ -14,12 +14,10 @@ export const auth = fastifyPlugin(async app => {
           where: {
             id: sub,
           },
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            role: true,
-            image: true,
+          omit: {
+            password: true,
+            createdAt: true,
+            updatedAt: true,
           },
         })
 

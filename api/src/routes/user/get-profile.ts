@@ -21,6 +21,7 @@ export const getProfile: FastifyPluginAsyncZod = async app => {
                 email: z.email(),
                 role: z.enum(UserRole),
                 image: z.string().nullable(),
+                hours: z.array(z.string()),
               }),
             })
             .describe("OK"),
