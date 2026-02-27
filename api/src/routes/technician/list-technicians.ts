@@ -9,7 +9,7 @@ export const listTechnicians: FastifyPluginAsyncZod = async app => {
   app.register(auth).get(
     "/technicians",
     {
-      preHandler: [verifyUserRole("ADMIN")],
+      preHandler: [verifyUserRole("ADMIN", "CLIENT")],
       schema: {
         tags: ["technician"],
         summary: "List technicians",
