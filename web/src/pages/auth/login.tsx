@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
-import { Link, useNavigate } from "react-router"
+import { Link, useNavigate, useSearchParams } from "react-router"
 import { toast } from "sonner"
 import z from "zod"
 
@@ -19,6 +19,7 @@ type SignInSchema = z.infer<typeof signInSchema>
 
 export function Login() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
 
   const { save } = useAuth()
 
@@ -28,6 +29,9 @@ export function Login() {
     formState: { errors, isSubmitting },
   } = useForm<SignInSchema>({
     resolver: zodResolver(signInSchema),
+    defaultValues: {
+      email: searchParams.get("email") ?? "",
+    },
   })
 
   const { mutateAsync: signInFn } = useMutation({
