@@ -141,7 +141,7 @@ function SelectHelperText({
   return (
     <small
       className={cn(
-        "mt-1.5 italic text-xs text-gray-400 group-focus-within:text-gray-400 group-aria-invalid:text-feedback-danger group-aria-invalid:not-italic",
+        "mt-1.5 italic text-xs text-gray-400 group-focus-within:text-gray-400 group-aria-invalid:text-feedback-danger",
         className,
       )}
       {...props}

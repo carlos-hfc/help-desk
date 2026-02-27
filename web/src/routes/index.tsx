@@ -7,6 +7,7 @@ import { SignUp } from "@/pages/auth/sign-up"
 import { Clients } from "@/pages/clients"
 import { Dashboard } from "@/pages/dashboard"
 import { CallDetailsPage } from "@/pages/dashboard/call-details-page"
+import { CreateCall } from "@/pages/dashboard/create-call"
 import { Services } from "@/pages/services"
 import { Technicians } from "@/pages/technicians"
 import { TechnicianDetailsPage } from "@/pages/technicians/technician-details-page"
@@ -45,6 +46,10 @@ export const routes = createBrowserRouter([
       {
         path: "register-technician",
         element: <TechnicianDetailsPage />,
+      },
+      {
+        path: "register-call",
+        element: <CreateCall />,
       },
       {
         path: "clients",
