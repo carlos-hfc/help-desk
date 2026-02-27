@@ -64,42 +64,60 @@ export function Header() {
                   Menu
                 </DropdownMenuLabel>
 
-                <DropdownMenuItem asChild>
-                  <NavLink to="/">
-                    <ClipboardListIcon />
-                    Chamados
-                  </NavLink>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <NavLink to="/technicians">
-                    <UsersIcon />
-                    Técnicos
-                  </NavLink>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <NavLink to="/clients">
-                    <BriefcaseBusinessIcon />
-                    Clientes
-                  </NavLink>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <NavLink to="/services">
-                    <WrenchIcon />
-                    Serviços
-                  </NavLink>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <NavLink to="/calls">
-                    <ClipboardListIcon />
-                    Meus chamados
-                  </NavLink>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <NavLink to="/calls">
-                    <PlusIcon />
-                    Criar chamado
-                  </NavLink>
-                </DropdownMenuItem>
+                {IS_ADMIN && (
+                  <>
+                    <DropdownMenuItem asChild>
+                      <NavLink to="/">
+                        <ClipboardListIcon />
+                        Chamados
+                      </NavLink>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <NavLink to="/technicians">
+                        <UsersIcon />
+                        Técnicos
+                      </NavLink>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <NavLink to="/clients">
+                        <BriefcaseBusinessIcon />
+                        Clientes
+                      </NavLink>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <NavLink to="/services">
+                        <WrenchIcon />
+                        Serviços
+                      </NavLink>
+                    </DropdownMenuItem>
+                  </>
+                )}
+
+                {IS_TECHNICIAN && (
+                  <DropdownMenuItem asChild>
+                    <NavLink to="/calls">
+                      <ClipboardListIcon />
+                      Meus chamados
+                    </NavLink>
+                  </DropdownMenuItem>
+                )}
+
+                {IS_CLIENT && (
+                  <>
+                    <DropdownMenuItem asChild>
+                      <NavLink to="/calls">
+                        <ClipboardListIcon />
+                        Meus chamados
+                      </NavLink>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <NavLink to="/register-call">
+                        <PlusIcon />
+                        Criar chamado
+                      </NavLink>
+                    </DropdownMenuItem>
+                  </>
+                )}
               </nav>
             </DropdownMenuContent>
           </DropdownMenuPortal>
@@ -157,7 +175,7 @@ export function Header() {
                 <ClipboardListIcon />
                 Meus chamados
               </NavLink>
-              <NavLink to="/calls">
+              <NavLink to="/register-call">
                 <PlusIcon />
                 Criar chamado
               </NavLink>
