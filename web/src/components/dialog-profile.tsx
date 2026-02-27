@@ -170,7 +170,6 @@ export function DialogProfile() {
       asChild
       aria-describedby={undefined}
       aria-disabled={isPendingAddProfileImage || isPendingRemoveProfileImage}
-      className="aria-disabled:opacity-80 aria-disabled:*:pointer-events-none"
     >
       <form onSubmit={handleSubmit(handleUpdateProfile)}>
         <DialogHeader>

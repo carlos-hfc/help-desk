@@ -20,7 +20,7 @@ interface DialogDeleteClientProps {
 }
 
 export function DialogDeleteClient({ client }: DialogDeleteClientProps) {
-  const { mutateAsync: deleteClientFn } = useMutation({
+  const { mutateAsync: deleteClientFn, isPending } = useMutation({
     mutationFn: deleteClient,
     onSuccess(_, { id }) {
       toast.success("Cliente excluído com sucesso")
@@ -40,7 +40,7 @@ export function DialogDeleteClient({ client }: DialogDeleteClientProps) {
   })
 
   return (
-    <DialogContent>
+    <DialogContent aria-disabled={isPending}>
       <DialogHeader>
         <DialogTitle>Excluir cliente</DialogTitle>
       </DialogHeader>
