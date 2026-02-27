@@ -27,11 +27,11 @@ export const createPassword: FastifyPluginAsyncZod = async app => {
       const { email, password } = request.body
 
       const user = await prisma.user.findUnique({
-        where: { email },
+        where: { email, role: "TECHNICIAN" },
       })
 
       if (!user) {
-        throw new ClientError("User not found", 404)
+        throw new ClientError("Technician not found", 404)
       }
 
       const passwordHash = await hash(password)
