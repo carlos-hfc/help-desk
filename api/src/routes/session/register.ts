@@ -1,5 +1,3 @@
-import { randomBytes } from "node:crypto"
-
 import { hash } from "argon2"
 import { FastifyPluginAsyncZod } from "fastify-type-provider-zod"
 import z from "zod"
@@ -18,6 +16,7 @@ export const register: FastifyPluginAsyncZod = async app => {
         body: z.object({
           name: z.string().nonempty(),
           email: z.email(),
+          password: z.string().min(6),
         }),
         response: {
           201: z
@@ -30,7 +29,7 @@ export const register: FastifyPluginAsyncZod = async app => {
       },
     },
     async (request, reply) => {
-      const { email, name } = request.body
+      const { email, name, password } = request.body
 
       const userExists = await prisma.user.findUnique({
         where: { email },
@@ -40,13 +39,13 @@ export const register: FastifyPluginAsyncZod = async app => {
         throw new UserAlreadyExists()
       }
 
-      const password = await hash(randomBytes(10).toString("hex"))
+      const passwordHash = await hash(password)
 
       const { id: userId } = await prisma.user.create({
         data: {
           name,
           email,
-          password,
+          password: passwordHash,
           role: "CLIENT",
         },
       })
