@@ -7,7 +7,7 @@ export function CallsTableSkeleton() {
       <TableCell className="text-xs">
         <Skeleton />
       </TableCell>
-      <TableCell className="text-xs font-bold hidden lg:table-cell">
+      <TableCell className="text-xs font-bold max-lg:hidden">
         <Skeleton />
       </TableCell>
       <TableCell className="space-y-1">
@@ -18,19 +18,19 @@ export function CallsTableSkeleton() {
           <Skeleton className="w-32" />
         </span>
       </TableCell>
-      <TableCell className="hidden lg:table-cell">
+      <TableCell className="max-lg:hidden">
         <Skeleton />
       </TableCell>
-      <TableCell className="hidden lg:table-cell">
+      <TableCell className="max-lg:hidden">
         <Skeleton />
       </TableCell>
-      <TableCell className="hidden lg:table-cell">
-        <Skeleton />
-      </TableCell>
-      <TableCell>
+      <TableCell className="max-lg:hidden">
         <Skeleton />
       </TableCell>
       <TableCell>
+        <Skeleton className="w-20" />
+      </TableCell>
+      <TableCell className="w-6">
         <Skeleton className="size-6" />
       </TableCell>
     </TableRow>

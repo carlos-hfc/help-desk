@@ -5,30 +5,37 @@ import { Avatar } from "@/components/avatar"
 import { Button } from "@/components/button"
 import { CallStatus } from "@/components/call-status"
 import { TableCell, TableRow } from "@/components/table"
+import { useAuth } from "@/contexts/auth"
 import type { Call } from "@/http/list-calls"
 import { formatCurrency } from "@/utils/format-currency"
+import { formatDate } from "@/utils/format-date"
 
 interface CallsTableRowProps {
   call: Call
 }
 
 export function CallsTableRow({ call }: CallsTableRowProps) {
+  const { IS_CLIENT } = useAuth()
+
   const navigate = useNavigate()
 
   return (
     <TableRow>
-      <TableCell className="text-xs">{call.updatedAt}</TableCell>
-      <TableCell className="text-xs font-bold hidden lg:table-cell">
+      <TableCell className="text-xs">{formatDate(call.updatedAt)}</TableCell>
+      <TableCell className="text-xs font-bold max-lg:hidden">
         {call.protocol}
       </TableCell>
       <TableCell>
         <span className="block font-bold">{call.title}</span>
         <span className="block text-xs">{call.service}</span>
       </TableCell>
-      <TableCell className="hidden lg:table-cell">
+      <TableCell className="max-lg:hidden">
         {formatCurrency(call.totalValue)}
       </TableCell>
-      <TableCell className="hidden lg:table-cell">
+      <TableCell
+        hidden={IS_CLIENT}
+        className="max-lg:hidden"
+      >
         <Avatar
           avatar={call.client.image}
           alt={call.client.name}
@@ -36,7 +43,7 @@ export function CallsTableRow({ call }: CallsTableRowProps) {
           {call.client.name}
         </Avatar>
       </TableCell>
-      <TableCell className="hidden lg:table-cell">
+      <TableCell className="max-lg:hidden">
         <Avatar
           avatar={call.technician.image}
           alt={call.technician.name}
