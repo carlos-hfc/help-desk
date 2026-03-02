@@ -36,6 +36,9 @@ export const listTechnicians: FastifyPluginAsyncZod = async app => {
         where: {
           role: "TECHNICIAN",
         },
+        orderBy: {
+          name: "asc",
+        },
       })
 
       return reply.send({

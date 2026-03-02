@@ -80,6 +80,9 @@ export const listCalls: FastifyPluginAsyncZod = async app => {
             },
           },
         },
+        orderBy: {
+          updatedAt: "desc",
+        },
       })
 
       return reply.send({

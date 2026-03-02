@@ -35,6 +35,9 @@ export const listServices: FastifyPluginAsyncZod = async app => {
         where: {
           deletedAt: role !== "ADMIN" ? null : undefined,
         },
+        orderBy: {
+          name: "asc",
+        },
       })
 
       return reply.send({

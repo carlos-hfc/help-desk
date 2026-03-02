@@ -41,6 +41,9 @@ export const listClients: FastifyPluginAsyncZod = async app => {
           email: true,
           image: true,
         },
+        orderBy: {
+          name: "asc",
+        },
       })
 
       return reply.send({ clients })
