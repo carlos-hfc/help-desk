@@ -1,171 +1,214 @@
-import { CheckCircleIcon, Clock2Icon, PlusIcon, TrashIcon } from "lucide-react"
+import { useQuery } from "@tanstack/react-query"
+import { Clock2Icon, PlusIcon, TrashIcon } from "lucide-react"
+import { useParams } from "react-router"
 
 import { Avatar } from "@/components/avatar"
 import { Button } from "@/components/button"
 import { CallStatus } from "@/components/call-status"
 import { Dialog, DialogTrigger } from "@/components/dialog"
 import { PageTitle } from "@/components/page-title"
+import { useAuth } from "@/contexts/auth"
+import { getCall } from "@/http/get-call"
+import { formatCurrency } from "@/utils/format-currency"
+import { formatDate } from "@/utils/format-date"
 
+import { CallDetailsPageSkeleton } from "./call-details-page-skeleton"
 import { DialogAdditionalService } from "./dialog-additional-service"
 
 export function CallDetailsPage() {
+  const { IS_CLIENT, IS_TECHNICIAN } = useAuth()
+
+  const { id } = useParams<"id">()
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["calls", id],
+    queryFn: () => getCall({ id: String(id) }),
+  })
+
+  const serviceCreatedByClient = data?.call.services.find(
+    service => service.createdBy === "CLIENT",
+  )
+  const servicesCreatedByTechnician = data?.call.services.filter(
+    service => service.createdBy === "TECHNICIAN",
+  )
+
   return (
     <div className="max-w-4xl mx-auto w-full flex flex-col gap-6">
       <PageTitle
         title="Chamado detalhado"
-        hasBackButton
+        backButton
       >
-        <Button variant="secondary">
-          <Clock2Icon />
-          Em atendimento
-        </Button>
-        <Button variant="secondary">
-          <CheckCircleIcon />
-          Encerrado
-        </Button>
+        {!IS_CLIENT && (
+          <Button variant="secondary">
+            <Clock2Icon />
+            Em atendimento
+          </Button>
+        )}
       </PageTitle>
 
-      <div className="grid gap-4 lg:gap-x-6 text-gray-200">
-        <div className="border border-gray-500 rounded-xl p-5 flex flex-col gap-5 flex-1 lg:row-start-1 lg:row-end-3">
-          <header className="font-bold">
-            <div className="flex items-center justify-between">
-              <span className="block text-gray-300 text-xs">0004</span>
-              <CallStatus status="CLOSED" />
-            </div>
-
-            <h2>Backup nao funciona</h2>
-          </header>
-
-          <div>
-            <span className="text-gray-400 font-bold text-xs">Descricao</span>
-            <p className="text-sm">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit,
-              minus magni. Totam quae minus officiis ab porro autem enim culpa
-              aliquid molestiae iste modi quia alias labore dolores, doloribus
-              possimus.
-            </p>
-          </div>
-
-          <div>
-            <span className="text-gray-400 font-bold text-xs">Categoria</span>
-            <p className="text-sm">Recuperacao de dados</p>
-          </div>
-
-          <div className="flex items-center justify-between gap-8">
-            <div className="w-full">
-              <span className="text-gray-400 font-bold text-xs">Criado em</span>
-              <p className="text-sm">12/12/12 12:12</p>
-            </div>
-            <div className="w-full">
-              <span className="text-gray-400 font-bold text-xs">
-                Atualizado em
-              </span>
-              <p className="text-sm">12/12/12 12:12</p>
-            </div>
-          </div>
-
-          <div>
-            <span className="text-gray-400 font-bold text-xs mb-2 block">
-              Cliente
-            </span>
-            <Avatar alt="Carlos Faustino">Carlos Faustino</Avatar>
-          </div>
-        </div>
-
-        <div className="border border-gray-500 rounded-xl p-5 flex flex-col gap-8 h-full lg:w-80 lg:row-span-1 lg:col-2">
-          <div>
-            <span className="text-gray-400 font-bold text-xs mb-2 block">
-              Tecnico responsavel
-            </span>
-            <Avatar alt="Carlos Faustino">
-              <div>
-                <span className="block">Carlos Faustino</span>
-                <span className="block text-gray-400 text-xs">
-                  carlos@email.com
+      {isLoading ? (
+        <CallDetailsPageSkeleton />
+      ) : (
+        <div className="grid gap-4 lg:gap-x-6 lg:grid-cols-[auto_320px] text-gray-200">
+          <div className="border border-gray-500 rounded-xl p-5 flex flex-col gap-5 lg:row-start-1 lg:row-end-3 lg:col-1">
+            <header className="font-bold">
+              <div className="flex items-center justify-between">
+                <span className="block text-gray-300 text-xs">
+                  {data?.call.protocol}
                 </span>
+                <CallStatus status={data?.call.status ?? "OPEN"} />
               </div>
-            </Avatar>
-          </div>
 
-          <div className="space-y-4">
-            <div className="space-y-2 text-xs">
-              <span className="block text-gray-400 font-bold">Valores</span>
-              <div className="flex justify-between">
-                <p>Preco base</p>
-                <p>R$ 200,00</p>
+              <h2>{data?.call.title}</h2>
+            </header>
+
+            <div>
+              <span className="text-gray-400 font-bold text-xs">Descricao</span>
+              <p className="text-sm">{data?.call.description}</p>
+            </div>
+
+            <div>
+              <span className="text-gray-400 font-bold text-xs">Categoria</span>
+              <p className="text-sm">{serviceCreatedByClient?.name}</p>
+            </div>
+
+            <div className="flex items-center justify-between gap-8">
+              <div className="w-full">
+                <span className="text-gray-400 font-bold text-xs">
+                  Criado em
+                </span>
+                <p className="text-sm">
+                  {formatDate(data?.call.createdAt ?? "")}
+                </p>
+              </div>
+              <div className="w-full">
+                <span className="text-gray-400 font-bold text-xs">
+                  Atualizado em
+                </span>
+                <p className="text-sm">
+                  {formatDate(data?.call.updatedAt ?? "")}
+                </p>
               </div>
             </div>
 
-            <div className="space-y-2 text-xs">
-              <span className="block text-gray-400 font-bold">Adicionais</span>
+            {!IS_CLIENT && (
               <div>
-                <div className="flex justify-between">
-                  <p>Preco base</p>
-                  <p>R$ 200,00</p>
+                <span className="text-gray-400 font-bold text-xs mb-2 block">
+                  Cliente
+                </span>
+                <Avatar alt="Carlos Faustino">Carlos Faustino</Avatar>
+              </div>
+            )}
+          </div>
+
+          <div className="border border-gray-500 rounded-xl p-5 flex flex-col gap-8 h-full lg:row-span-1 lg:col-2">
+            <div>
+              <span className="text-gray-400 font-bold text-xs mb-2 block">
+                Tecnico responsavel
+              </span>
+              <Avatar
+                avatar={data?.call.technician.image}
+                alt={data?.call.technician.name ?? ""}
+              >
+                <div>
+                  <span className="block">
+                    {data?.call.technician.name ?? ""}
+                  </span>
+                  <span className="block text-gray-400 text-xs">
+                    {data?.call.technician.email ?? ""}
+                  </span>
                 </div>
+              </Avatar>
+            </div>
+
+            <div className="space-y-4">
+              <div className="space-y-2 text-xs">
+                <span className="block text-gray-400 font-bold">Valores</span>
                 <div className="flex justify-between">
                   <p>Preco base</p>
-                  <p>R$ 200,00</p>
+                  <p>{formatCurrency(serviceCreatedByClient?.price ?? 0)}</p>
+                </div>
+              </div>
+
+              {servicesCreatedByTechnician &&
+                servicesCreatedByTechnician?.length > 0 && (
+                  <div className="space-y-2 text-xs">
+                    <span className="block text-gray-400 font-bold">
+                      Adicionais
+                    </span>
+                    <div>
+                      {servicesCreatedByTechnician?.map(service => (
+                        <div
+                          key={service.id}
+                          className="flex justify-between"
+                        >
+                          <p>Preco base</p>
+                          <p>{formatCurrency(service.price)}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+              <div className="pt-3 border-t border-gray-500 text-sm font-bold flex justify-between">
+                <p>Total</p>
+                <p>{formatCurrency(data?.call.totalValue ?? 0)}</p>
+              </div>
+            </div>
+          </div>
+
+          {IS_TECHNICIAN && (
+            <div className="border border-gray-500 rounded-xl p-5 flex flex-col gap-4 h-full text-xs lg:col-1">
+              <div className="flex justify-between items-center">
+                <span className="block text-gray-400 font-bold">
+                  Serviços adicionais
+                </span>
+
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button
+                      icon
+                      size="sm"
+                    >
+                      <PlusIcon />
+                    </Button>
+                  </DialogTrigger>
+
+                  <DialogAdditionalService />
+                </Dialog>
+              </div>
+
+              <div className="divide-y divide-gray-500">
+                <div className="flex justify-between items-center gap-6 py-1">
+                  <span className="block font-bold">Assinatura de backup</span>
+
+                  <span className="ml-auto">R$ 120,00</span>
+                  <Button
+                    icon
+                    size="sm"
+                    variant="link"
+                  >
+                    <TrashIcon className="text-feedback-danger" />
+                  </Button>
+                </div>
+
+                <div className="flex justify-between items-center gap-6 py-1">
+                  <span className="block font-bold">Assinatura de backup</span>
+
+                  <span className="ml-auto">R$ 120,00</span>
+                  <Button
+                    icon
+                    size="sm"
+                    variant="link"
+                  >
+                    <TrashIcon className="text-feedback-danger" />
+                  </Button>
                 </div>
               </div>
             </div>
-
-            <div className="pt-3 border-t border-gray-500 text-sm font-bold flex justify-between">
-              <p>Total</p>
-              <p>R$ 200,00</p>
-            </div>
-          </div>
+          )}
         </div>
-
-        <div className="border border-gray-500 rounded-xl p-5 flex flex-col gap-4 h-full text-xs lg:col-1">
-          <div className="flex justify-between items-center">
-            <span className="block text-gray-400 font-bold">
-              Serviços adicionais
-            </span>
-
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button
-                  icon
-                  size="sm"
-                >
-                  <PlusIcon />
-                </Button>
-              </DialogTrigger>
-
-              <DialogAdditionalService />
-            </Dialog>
-          </div>
-
-          <div className="divide-y divide-gray-500">
-            <div className="flex justify-between items-center gap-6 py-1">
-              <span className="block font-bold">Assinatura de backup</span>
-
-              <span className="ml-auto">R$ 120,00</span>
-              <Button
-                icon
-                size="sm"
-                variant="link"
-              >
-                <TrashIcon className="text-feedback-danger" />
-              </Button>
-            </div>
-
-            <div className="flex justify-between items-center gap-6 py-1">
-              <span className="block font-bold">Assinatura de backup</span>
-
-              <span className="ml-auto">R$ 120,00</span>
-              <Button
-                icon
-                size="sm"
-                variant="link"
-              >
-                <TrashIcon className="text-feedback-danger" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   )
 }
