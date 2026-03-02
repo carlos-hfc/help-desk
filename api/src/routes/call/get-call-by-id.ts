@@ -2,7 +2,7 @@ import { FastifyPluginAsyncZod } from "fastify-type-provider-zod"
 import z from "zod"
 
 import { ClientError } from "@/errors/client-error"
-import { CallStatus } from "@/generated/prisma/enums"
+import { CallStatus, CreatedBy } from "@/generated/prisma/enums"
 import { prisma } from "@/lib/prisma"
 import { auth } from "@/middlewares/auth"
 import { NotFoundSchema } from "@/utils/global-response-schema"
@@ -18,7 +18,7 @@ export const getCallById: FastifyPluginAsyncZod = async app => {
         params: z.object({
           callId: z.uuid(),
         }),
-        repsonse: {
+        response: {
           200: z
             .object({
               call: z.object({
@@ -33,19 +33,21 @@ export const getCallById: FastifyPluginAsyncZod = async app => {
                 status: z.enum(CallStatus),
                 createdAt: z.date(),
                 updatedAt: z.date(),
-                client: {
+                client: z.object({
                   name: z.string(),
                   image: z.string().nullable(),
-                },
-                technician: {
+                }),
+                technician: z.object({
                   name: z.string(),
+                  email: z.email(),
                   image: z.string().nullable(),
-                },
+                }),
                 services: z.array(
                   z.object({
                     id: z.uuid(),
                     name: z.string(),
                     price: z.number(),
+                    createdBy: z.enum(CreatedBy),
                   }),
                 ),
               }),
@@ -76,11 +78,13 @@ export const getCallById: FastifyPluginAsyncZod = async app => {
           technician: {
             select: {
               name: true,
+              email: true,
               image: true,
             },
           },
           callServices: {
             select: {
+              createdBy: true,
               service: {
                 select: {
                   id: true,
@@ -104,6 +108,7 @@ export const getCallById: FastifyPluginAsyncZod = async app => {
           services: call.callServices.map(item => ({
             ...item.service,
             price: item.service.price.toNumber(),
+            createdBy: item.createdBy,
           })),
         },
       })
