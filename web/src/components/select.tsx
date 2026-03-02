@@ -11,7 +11,7 @@ function Select({
 }) {
   return (
     <div
-      className="group"
+      className="group has-disabled:opacity-70 has-disabled:pointer-events-none"
       aria-invalid={error}
     >
       <SelectPrimitive.Root {...props} />
