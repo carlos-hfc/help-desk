@@ -30,6 +30,7 @@ export const createCall: FastifyPluginAsyncZod = async app => {
           201: z
             .object({
               callId: z.uuid(),
+              protocol: z.number(),
             })
             .describe("Created"),
           400: BadRequestSchema,
@@ -70,7 +71,7 @@ export const createCall: FastifyPluginAsyncZod = async app => {
         )
       }
 
-      const { id: callId } = await prisma.call.create({
+      const { id: callId, protocol } = await prisma.call.create({
         data: {
           hour,
           description,
@@ -87,7 +88,7 @@ export const createCall: FastifyPluginAsyncZod = async app => {
         },
       })
 
-      return reply.status(201).send({ callId })
+      return reply.status(201).send({ callId, protocol })
     },
   )
 }
