@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query"
-import { Clock2Icon, PlusIcon, TrashIcon } from "lucide-react"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import { CheckCircleIcon, Clock2Icon, PlusIcon, TrashIcon } from "lucide-react"
 import { useParams } from "react-router"
 
 import { Avatar } from "@/components/avatar"
@@ -8,7 +8,10 @@ import { CallStatus } from "@/components/call-status"
 import { Dialog, DialogTrigger } from "@/components/dialog"
 import { PageTitle } from "@/components/page-title"
 import { useAuth } from "@/contexts/auth"
-import { getCall } from "@/http/get-call"
+import { getCall, type GetCallResponse } from "@/http/get-call"
+import type { ListCallsResponse } from "@/http/list-calls"
+import { startService } from "@/http/start-service"
+import { queryClient } from "@/lib/react-query"
 import { formatCurrency } from "@/utils/format-currency"
 import { formatDate } from "@/utils/format-date"
 
@@ -32,6 +35,50 @@ export function CallDetailsPage() {
     service => service.createdBy === "TECHNICIAN",
   )
 
+  const { mutateAsync: startServiceFn, isPending: isPendingStartService } =
+    useMutation({
+      mutationFn: startService,
+      onSuccess(_, { id }) {
+        const callsListCache = queryClient.getQueriesData<
+          ListCallsResponse | GetCallResponse
+        >({
+          queryKey: ["calls"],
+        })
+
+        const payload = {
+          statis: "IN_PROGRESS",
+          updatedAt: new Date().toISOString(),
+        }
+
+        callsListCache.forEach(([cacheKey, cacheData]) => {
+          if (!cacheData) return
+
+          if ("calls" in cacheData) {
+            queryClient.setQueryData<ListCallsResponse>(cacheKey, {
+              ...cacheData,
+              calls: cacheData.calls.map(call => {
+                if (call.id === id) {
+                  return { ...call, ...payload }
+                }
+
+                return call
+              }),
+            })
+          }
+
+          if ("call" in cacheData) {
+            queryClient.setQueryData<GetCallResponse>(cacheKey, {
+              ...cacheData,
+              call: {
+                ...cacheData.call,
+                ...payload,
+              },
+            })
+          }
+        })
+      },
+    })
+
   return (
     <div className="max-w-4xl mx-auto w-full flex flex-col gap-6">
       <PageTitle
@@ -39,10 +86,23 @@ export function CallDetailsPage() {
         backButton
       >
         {!IS_CLIENT && (
-          <Button variant="secondary">
-            <Clock2Icon />
-            Em atendimento
-          </Button>
+          <>
+            {data?.call.status === "OPEN" && (
+              <Button
+                disabled={isPendingStartService}
+                onClick={() => startServiceFn({ id: String(id) })}
+              >
+                <Clock2Icon />
+                Iniciar atendimento
+              </Button>
+            )}
+            {data?.call.status === "IN_PROGRESS" && (
+              <Button variant="secondary">
+                <CheckCircleIcon />
+                Encerrar
+              </Button>
+            )}
+          </>
         )}
       </PageTitle>
 
@@ -169,6 +229,7 @@ export function CallDetailsPage() {
                     <Button
                       icon
                       size="sm"
+                      aria-label="Adicionar serviço"
                     >
                       <PlusIcon />
                     </Button>
@@ -178,33 +239,30 @@ export function CallDetailsPage() {
                 </Dialog>
               </div>
 
-              <div className="divide-y divide-gray-500">
-                <div className="flex justify-between items-center gap-6 py-1">
-                  <span className="block font-bold">Assinatura de backup</span>
+              {servicesCreatedByTechnician &&
+                servicesCreatedByTechnician.length > 0 && (
+                  <div className="divide-y divide-gray-500">
+                    {servicesCreatedByTechnician.map(service => (
+                      <div
+                        key={service.id}
+                        className="flex justify-between items-center gap-6 py-1"
+                      >
+                        <span className="block font-bold">{service.name}</span>
 
-                  <span className="ml-auto">R$ 120,00</span>
-                  <Button
-                    icon
-                    size="sm"
-                    variant="link"
-                  >
-                    <TrashIcon className="text-feedback-danger" />
-                  </Button>
-                </div>
-
-                <div className="flex justify-between items-center gap-6 py-1">
-                  <span className="block font-bold">Assinatura de backup</span>
-
-                  <span className="ml-auto">R$ 120,00</span>
-                  <Button
-                    icon
-                    size="sm"
-                    variant="link"
-                  >
-                    <TrashIcon className="text-feedback-danger" />
-                  </Button>
-                </div>
-              </div>
+                        <span className="ml-auto">
+                          {formatCurrency(service.price)}
+                        </span>
+                        <Button
+                          icon
+                          size="sm"
+                          variant="link"
+                        >
+                          <TrashIcon className="text-feedback-danger" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
             </div>
           )}
         </div>

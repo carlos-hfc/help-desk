@@ -86,7 +86,6 @@ export function CreateCall() {
         queryClient.setQueryData<ListCallsResponse>(["calls"], {
           ...cached,
           calls: [
-            ...cached.calls,
             {
               id: callId,
               protocol,
@@ -104,6 +103,7 @@ export function CreateCall() {
               },
               ...variables,
             },
+            ...cached.calls,
           ],
         })
       }
