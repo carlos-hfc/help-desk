@@ -72,8 +72,6 @@ export const addAdditionalServiceToCall: FastifyPluginAsyncZod = async app => {
       await prisma.call.update({
         where: {
           id: callId,
-          technicianId,
-          status: "IN_PROGRESS",
         },
         data: {
           totalValue: call.totalValue.toNumber() + service.price.toNumber(),
@@ -86,14 +84,6 @@ export const addAdditionalServiceToCall: FastifyPluginAsyncZod = async app => {
           },
         },
       })
-
-      // await prisma.callService.create({
-      //   data: {
-      //     createdBy: "TECHNICIAN",
-      //     callId,
-      //     serviceId,
-      //   },
-      // })
 
       return reply.status(204).send()
     },

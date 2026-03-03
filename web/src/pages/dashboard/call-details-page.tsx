@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { CheckCircleIcon, Clock2Icon, PlusIcon, TrashIcon } from "lucide-react"
+import { useState } from "react"
 import { useParams } from "react-router"
 
 import { Avatar } from "@/components/avatar"
@@ -9,7 +10,7 @@ import { Dialog, DialogTrigger } from "@/components/dialog"
 import { PageTitle } from "@/components/page-title"
 import { useAuth } from "@/contexts/auth"
 import { getCall, type GetCallResponse } from "@/http/get-call"
-import type { ListCallsResponse } from "@/http/list-calls"
+import type { CallStatusType, ListCallsResponse } from "@/http/list-calls"
 import { startService } from "@/http/start-service"
 import { queryClient } from "@/lib/react-query"
 import { formatCurrency } from "@/utils/format-currency"
@@ -19,6 +20,9 @@ import { CallDetailsPageSkeleton } from "./call-details-page-skeleton"
 import { DialogAdditionalService } from "./dialog-additional-service"
 
 export function CallDetailsPage() {
+  const [isOpenAdditionalServices, setIsOpenAdditionalServices] =
+    useState(false)
+
   const { IS_CLIENT, IS_TECHNICIAN } = useAuth()
 
   const { id } = useParams<"id">()
@@ -35,6 +39,11 @@ export function CallDetailsPage() {
     service => service.createdBy === "TECHNICIAN",
   )
 
+  const selectedServices = [
+    ...(servicesCreatedByTechnician?.map(service => service.id) ?? ""),
+    serviceCreatedByClient?.id ?? "",
+  ]
+
   const { mutateAsync: startServiceFn, isPending: isPendingStartService } =
     useMutation({
       mutationFn: startService,
@@ -46,7 +55,7 @@ export function CallDetailsPage() {
         })
 
         const payload = {
-          statis: "IN_PROGRESS",
+          status: "IN_PROGRESS" as CallStatusType,
           updatedAt: new Date().toISOString(),
         }
 
@@ -185,7 +194,7 @@ export function CallDetailsPage() {
               <div className="space-y-2 text-xs">
                 <span className="block text-gray-400 font-bold">Valores</span>
                 <div className="flex justify-between">
-                  <p>Preco base</p>
+                  <p>Preço base</p>
                   <p>{formatCurrency(serviceCreatedByClient?.price ?? 0)}</p>
                 </div>
               </div>
@@ -202,7 +211,7 @@ export function CallDetailsPage() {
                           key={service.id}
                           className="flex justify-between"
                         >
-                          <p>Preco base</p>
+                          <p>{service.name}</p>
                           <p>{formatCurrency(service.price)}</p>
                         </div>
                       ))}
@@ -224,7 +233,10 @@ export function CallDetailsPage() {
                   Serviços adicionais
                 </span>
 
-                <Dialog>
+                <Dialog
+                  open={isOpenAdditionalServices}
+                  onOpenChange={setIsOpenAdditionalServices}
+                >
                   <DialogTrigger asChild>
                     <Button
                       icon
@@ -235,7 +247,11 @@ export function CallDetailsPage() {
                     </Button>
                   </DialogTrigger>
 
-                  <DialogAdditionalService />
+                  <DialogAdditionalService
+                    open={isOpenAdditionalServices}
+                    onOpenChange={setIsOpenAdditionalServices}
+                    selectedServices={selectedServices}
+                  />
                 </Dialog>
               </div>
 

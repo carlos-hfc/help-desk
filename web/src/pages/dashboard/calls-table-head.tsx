@@ -18,7 +18,7 @@ export function CallsTableHead() {
           Cliente
         </TableHead>
         <TableHead className="max-lg:hidden w-40">Técnico</TableHead>
-        <TableHead className="w-16">Status</TableHead>
+        <TableHead className="w-40">Status</TableHead>
         <TableHead className="w-12" />
       </TableRow>
     </thead>
