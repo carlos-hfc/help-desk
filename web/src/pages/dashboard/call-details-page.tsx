@@ -226,7 +226,7 @@ export function CallDetailsPage() {
             </div>
           </div>
 
-          {IS_TECHNICIAN && (
+          {IS_TECHNICIAN && data?.call.status !== "OPEN" && (
             <div className="border border-gray-500 rounded-xl p-5 flex flex-col gap-4 h-full text-xs lg:col-1">
               <div className="flex justify-between items-center">
                 <span className="block text-gray-400 font-bold">
@@ -242,6 +242,7 @@ export function CallDetailsPage() {
                       icon
                       size="sm"
                       aria-label="Adicionar serviço"
+                      disabled={data?.call.status === "CLOSED"}
                     >
                       <PlusIcon />
                     </Button>
@@ -272,6 +273,8 @@ export function CallDetailsPage() {
                           icon
                           size="sm"
                           variant="link"
+                          disabled={data?.call.status === "CLOSED"}
+                          aria-label="Remover serviço"
                         >
                           <TrashIcon className="text-feedback-danger" />
                         </Button>
