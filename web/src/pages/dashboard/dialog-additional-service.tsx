@@ -47,7 +47,7 @@ export function DialogAdditionalService({
 }: DialogAdditionalServiceProps) {
   const { id } = useParams<"id">()
 
-  const { control, handleSubmit } = useForm<AddAdditionalServiceSchema>({
+  const { control, reset, handleSubmit } = useForm<AddAdditionalServiceSchema>({
     resolver: zodResolver(addAdditionalServiceSchema),
   })
 
@@ -114,6 +114,7 @@ export function DialogAdditionalService({
       })
 
       onOpenChange(false)
+      reset()
     },
   })
 
