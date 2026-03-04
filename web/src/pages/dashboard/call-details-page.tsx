@@ -119,7 +119,7 @@ export function CallDetailsPage() {
         <CallDetailsPageSkeleton />
       ) : (
         <div className="grid gap-4 lg:gap-x-6 lg:grid-cols-[auto_320px] text-gray-200">
-          <div className="border border-gray-500 rounded-xl p-5 flex flex-col gap-5 lg:row-start-1 lg:row-end-3 lg:col-1">
+          <div className="border border-gray-500 rounded-xl p-5 flex flex-col gap-5 lg:row-span-3 h-fit lg:col-1">
             <header className="font-bold">
               <div className="flex items-center justify-between">
                 <span className="block text-gray-300 text-xs">
