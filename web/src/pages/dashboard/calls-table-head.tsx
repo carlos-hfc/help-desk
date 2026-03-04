@@ -2,7 +2,7 @@ import { TableHead, TableRow } from "@/components/table"
 import { useAuth } from "@/contexts/auth"
 
 export function CallsTableHead() {
-  const { IS_CLIENT } = useAuth()
+  const { IS_CLIENT, IS_TECHNICIAN } = useAuth()
 
   return (
     <thead>
@@ -17,7 +17,12 @@ export function CallsTableHead() {
         >
           Cliente
         </TableHead>
-        <TableHead className="max-lg:hidden w-40">Técnico</TableHead>
+        <TableHead
+          hidden={IS_TECHNICIAN}
+          className="max-lg:hidden w-40"
+        >
+          Técnico
+        </TableHead>
         <TableHead className="w-40">Status</TableHead>
         <TableHead className="w-12" />
       </TableRow>

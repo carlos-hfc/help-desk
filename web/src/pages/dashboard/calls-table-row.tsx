@@ -15,7 +15,7 @@ interface CallsTableRowProps {
 }
 
 export function CallsTableRow({ call }: CallsTableRowProps) {
-  const { IS_CLIENT } = useAuth()
+  const { IS_CLIENT, IS_TECHNICIAN } = useAuth()
 
   const navigate = useNavigate()
 
@@ -43,7 +43,10 @@ export function CallsTableRow({ call }: CallsTableRowProps) {
           {call.client.name}
         </Avatar>
       </TableCell>
-      <TableCell className="max-lg:hidden">
+      <TableCell
+        hidden={IS_TECHNICIAN}
+        className="max-lg:hidden"
+      >
         <Avatar
           avatar={call.technician.image}
           alt={call.technician.name}
