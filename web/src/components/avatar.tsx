@@ -4,9 +4,16 @@ interface AvatarProps extends React.PropsWithChildren {
   avatar?: string | null
   alt: string
   className?: string
+  containerClassName?: string
 }
 
-export function Avatar({ alt, avatar, children, className }: AvatarProps) {
+export function Avatar({
+  alt,
+  avatar,
+  children,
+  className,
+  containerClassName,
+}: AvatarProps) {
   const fallback = alt
     .split(" ")
     .map(item => item.charAt(0))
@@ -14,10 +21,15 @@ export function Avatar({ alt, avatar, children, className }: AvatarProps) {
     .toUpperCase()
 
   return (
-    <div className="flex items-center gap-2 cursor-default">
+    <div
+      className={cn(
+        "flex items-center gap-2 cursor-default",
+        containerClassName,
+      )}
+    >
       <div
         className={cn(
-          "rounded-full bg-blue-dark size-7 text-gray-600 content-center text-center text-xs shrink-0",
+          "rounded-full bg-blue-dark size-7 text-gray-600 content-center text-center text-xs shrink-0 leading-none",
           className,
         )}
       >
