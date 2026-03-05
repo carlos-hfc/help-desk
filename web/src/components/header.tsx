@@ -27,11 +27,12 @@ import { Dialog } from "./dialog"
 import { DialogProfile } from "./dialog-profile"
 import { MenuProfile } from "./menu-profile"
 import { NavLink } from "./nav-link"
+import { Skeleton } from "./skeleton"
 
 export function Header() {
   const { role, IS_ADMIN, IS_TECHNICIAN, IS_CLIENT, save } = useAuth()
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["profile"],
     queryFn: async () => {
       const profile = await getProfile()
@@ -141,44 +142,54 @@ export function Header() {
         </div>
 
         <nav className="hidden lg:flex flex-col gap-0.5 w-full p-4 bg-gray-100 rounded-lg">
-          {IS_ADMIN && (
+          {isLoading ? (
             <>
-              <NavLink to="/">
-                <ClipboardListIcon />
-                Chamados
-              </NavLink>
-              <NavLink to="/technicians">
-                <UsersIcon />
-                Técnicos
-              </NavLink>
-              <NavLink to="/clients">
-                <BriefcaseBusinessIcon />
-                Clientes
-              </NavLink>
-              <NavLink to="/services">
-                <WrenchIcon />
-                Serviços
-              </NavLink>
+              <Skeleton className="h-12" />
+              <Skeleton className="h-12" />
+              <Skeleton className="h-12" />
             </>
-          )}
-
-          {IS_TECHNICIAN && (
-            <NavLink to="/">
-              <ClipboardListIcon />
-              Meus chamados
-            </NavLink>
-          )}
-
-          {IS_CLIENT && (
+          ) : (
             <>
-              <NavLink to="/">
-                <ClipboardListIcon />
-                Meus chamados
-              </NavLink>
-              <NavLink to="/register-call">
-                <PlusIcon />
-                Criar chamado
-              </NavLink>
+              {IS_ADMIN && (
+                <>
+                  <NavLink to="/">
+                    <ClipboardListIcon />
+                    Chamados
+                  </NavLink>
+                  <NavLink to="/technicians">
+                    <UsersIcon />
+                    Técnicos
+                  </NavLink>
+                  <NavLink to="/clients">
+                    <BriefcaseBusinessIcon />
+                    Clientes
+                  </NavLink>
+                  <NavLink to="/services">
+                    <WrenchIcon />
+                    Serviços
+                  </NavLink>
+                </>
+              )}
+
+              {IS_TECHNICIAN && (
+                <NavLink to="/">
+                  <ClipboardListIcon />
+                  Meus chamados
+                </NavLink>
+              )}
+
+              {IS_CLIENT && (
+                <>
+                  <NavLink to="/">
+                    <ClipboardListIcon />
+                    Meus chamados
+                  </NavLink>
+                  <NavLink to="/register-call">
+                    <PlusIcon />
+                    Criar chamado
+                  </NavLink>
+                </>
+              )}
             </>
           )}
         </nav>
@@ -186,21 +197,31 @@ export function Header() {
         <Dialog>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <div className="w-full border-t border-gray-200 px-4 py-5 hidden lg:flex items-center gap-3 hover:bg-gray-200 mt-auto cursor-default">
-                <Avatar
-                  avatar={data?.user.image}
-                  alt={data?.user.name ?? ""}
-                  className="size-10 text-base"
-                />
-
-                <div className="hidden lg:block">
-                  <span className="block text-gray-600 text-sm">
-                    {data?.user.name}
-                  </span>
-                  <span className="block text-gray-400 text-xs">
-                    {data?.user.email}
-                  </span>
-                </div>
+              <div className="w-full border-t border-gray-200 px-4 py-5 max-lg:hidden hover:bg-gray-200 mt-auto cursor-default">
+                {isLoading ? (
+                  <div className="flex items-center gap-2">
+                    <Skeleton className="size-10 rounded-full" />
+                    <div className="space-y-1">
+                      <Skeleton className="h-4 w-20" />
+                      <Skeleton className="h-4 w-28" />
+                    </div>
+                  </div>
+                ) : (
+                  <Avatar
+                    avatar={data?.user.image}
+                    alt={data?.user.name ?? ""}
+                    className="size-10 text-base"
+                  >
+                    <div>
+                      <span className="block text-gray-600 text-sm">
+                        {data?.user.name}
+                      </span>
+                      <span className="block text-gray-400 text-xs">
+                        {data?.user.email}
+                      </span>
+                    </div>
+                  </Avatar>
+                )}
               </div>
             </DropdownMenuTrigger>
 
@@ -217,21 +238,16 @@ export function Header() {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <div className="lg:hidden flex items-center gap-3">
-                <Avatar
-                  avatar={data?.user.image}
-                  alt={data?.user.name ?? ""}
-                  className="size-10 text-base"
-                />
-
-                <div className="hidden lg:block">
-                  <span className="block text-gray-600 text-sm">
-                    Usuario admin
-                  </span>
-                  <span className="block text-gray-400 text-xs">
-                    admin@email.com
-                  </span>
-                </div>
+              <div className="lg:hidden">
+                {isLoading ? (
+                  <Skeleton className="size-10 rounded-full" />
+                ) : (
+                  <Avatar
+                    avatar={data?.user.image}
+                    alt={data?.user.name ?? ""}
+                    className="size-10 text-base"
+                  />
+                )}
               </div>
             </DropdownMenuTrigger>
 
