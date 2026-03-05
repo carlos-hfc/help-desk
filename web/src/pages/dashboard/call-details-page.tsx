@@ -9,6 +9,7 @@ import { CallStatus } from "@/components/call-status"
 import { Dialog, DialogTrigger } from "@/components/dialog"
 import { PageTitle } from "@/components/page-title"
 import { useAuth } from "@/contexts/auth"
+import { endService } from "@/http/end-service"
 import { getCall, type GetCallResponse } from "@/http/get-call"
 import type { CallStatusType, ListCallsResponse } from "@/http/list-calls"
 import { startService } from "@/http/start-service"
@@ -44,47 +45,59 @@ export function CallDetailsPage() {
     serviceCreatedByClient?.id ?? "",
   ]
 
+  function updateServicesOnCache(id: string, status: CallStatusType) {
+    const callsListCache = queryClient.getQueriesData<
+      ListCallsResponse | GetCallResponse
+    >({
+      queryKey: ["calls"],
+    })
+
+    const payload = {
+      status,
+      updatedAt: new Date().toISOString(),
+    }
+
+    callsListCache.forEach(([cacheKey, cacheData]) => {
+      if (!cacheData) return
+
+      if ("calls" in cacheData) {
+        queryClient.setQueryData<ListCallsResponse>(cacheKey, {
+          ...cacheData,
+          calls: cacheData.calls.map(call => {
+            if (call.id === id) {
+              return { ...call, ...payload }
+            }
+
+            return call
+          }),
+        })
+      }
+
+      if ("call" in cacheData) {
+        queryClient.setQueryData<GetCallResponse>(cacheKey, {
+          ...cacheData,
+          call: {
+            ...cacheData.call,
+            ...payload,
+          },
+        })
+      }
+    })
+  }
+
   const { mutateAsync: startServiceFn, isPending: isPendingStartService } =
     useMutation({
       mutationFn: startService,
       onSuccess(_, { id }) {
-        const callsListCache = queryClient.getQueriesData<
-          ListCallsResponse | GetCallResponse
-        >({
-          queryKey: ["calls"],
-        })
+        updateServicesOnCache(id, "IN_PROGRESS")
+      },
+    })
 
-        const payload = {
-          status: "IN_PROGRESS" as CallStatusType,
-          updatedAt: new Date().toISOString(),
-        }
-
-        callsListCache.forEach(([cacheKey, cacheData]) => {
-          if (!cacheData) return
-
-          if ("calls" in cacheData) {
-            queryClient.setQueryData<ListCallsResponse>(cacheKey, {
-              ...cacheData,
-              calls: cacheData.calls.map(call => {
-                if (call.id === id) {
-                  return { ...call, ...payload }
-                }
-
-                return call
-              }),
-            })
-          }
-
-          if ("call" in cacheData) {
-            queryClient.setQueryData<GetCallResponse>(cacheKey, {
-              ...cacheData,
-              call: {
-                ...cacheData.call,
-                ...payload,
-              },
-            })
-          }
-        })
+  const { mutateAsync: endServiceFn, isPending: isPendingEndService } =
+    useMutation({
+      mutationFn: endService,
+      onSuccess(_, { id }) {
+        updateServicesOnCache(id, "CLOSED")
       },
     })
 
@@ -105,8 +118,13 @@ export function CallDetailsPage() {
                 Iniciar atendimento
               </Button>
             )}
+
             {data?.call.status === "IN_PROGRESS" && (
-              <Button variant="secondary">
+              <Button
+                variant="secondary"
+                disabled={isPendingEndService}
+                onClick={() => endServiceFn({ id: String(id) })}
+              >
                 <CheckCircleIcon />
                 Encerrar
               </Button>
