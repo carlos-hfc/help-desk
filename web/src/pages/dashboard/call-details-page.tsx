@@ -11,7 +11,8 @@ import { PageTitle } from "@/components/page-title"
 import { useAuth } from "@/contexts/auth"
 import { endService } from "@/http/end-service"
 import { getCall, type GetCallResponse } from "@/http/get-call"
-import type { CallStatusType, ListCallsResponse } from "@/http/list-calls"
+import type { ListCallsResponse } from "@/http/list-calls"
+import { removeRemoveAdditionalService } from "@/http/remove-additional-service"
 import { startService } from "@/http/start-service"
 import { queryClient } from "@/lib/react-query"
 import { formatCurrency } from "@/utils/format-currency"
@@ -45,7 +46,10 @@ export function CallDetailsPage() {
     serviceCreatedByClient?.id ?? "",
   ]
 
-  function updateServicesOnCache(id: string, status: CallStatusType) {
+  function updateServicesOnCache(
+    id: string,
+    call: Partial<GetCallResponse["call"]>,
+  ) {
     const callsListCache = queryClient.getQueriesData<
       ListCallsResponse | GetCallResponse
     >({
@@ -53,15 +57,15 @@ export function CallDetailsPage() {
     })
 
     const payload = {
-      status,
       updatedAt: new Date().toISOString(),
+      ...call,
     }
 
     callsListCache.forEach(([cacheKey, cacheData]) => {
       if (!cacheData) return
 
       if ("calls" in cacheData) {
-        queryClient.setQueryData<ListCallsResponse>(cacheKey, {
+        queryClient.setQueryData(cacheKey, {
           ...cacheData,
           calls: cacheData.calls.map(call => {
             if (call.id === id) {
@@ -74,7 +78,7 @@ export function CallDetailsPage() {
       }
 
       if ("call" in cacheData) {
-        queryClient.setQueryData<GetCallResponse>(cacheKey, {
+        queryClient.setQueryData(cacheKey, {
           ...cacheData,
           call: {
             ...cacheData.call,
@@ -89,7 +93,7 @@ export function CallDetailsPage() {
     useMutation({
       mutationFn: startService,
       onSuccess(_, { id }) {
-        updateServicesOnCache(id, "IN_PROGRESS")
+        updateServicesOnCache(id, { status: "IN_PROGRESS" })
       },
     })
 
@@ -97,9 +101,36 @@ export function CallDetailsPage() {
     useMutation({
       mutationFn: endService,
       onSuccess(_, { id }) {
-        updateServicesOnCache(id, "CLOSED")
+        updateServicesOnCache(id, { status: "CLOSED" })
       },
     })
+
+  const {
+    mutateAsync: removeAdditionalServiceFn,
+    isPending: isPendingRemoveService,
+  } = useMutation({
+    mutationFn: removeRemoveAdditionalService,
+    onSuccess(_, { callId, serviceId }) {
+      const service = servicesCreatedByTechnician?.find(
+        service => service.id === serviceId,
+      )
+
+      const services =
+        servicesCreatedByTechnician?.filter(
+          service => service.id !== serviceId,
+        ) ?? []
+
+      const totalValue = (data?.call.totalValue ?? 0) - (service?.price ?? 0)
+
+      updateServicesOnCache(callId, {
+        services: [
+          ...services,
+          serviceCreatedByClient,
+        ] as unknown as GetCallResponse["call"]["services"],
+        totalValue,
+      })
+    },
+  })
 
   return (
     <div className="max-w-4xl mx-auto w-full flex flex-col gap-6">
@@ -291,8 +322,17 @@ export function CallDetailsPage() {
                           icon
                           size="sm"
                           variant="link"
-                          disabled={data?.call.status === "CLOSED"}
+                          disabled={
+                            data?.call.status === "CLOSED" ||
+                            isPendingRemoveService
+                          }
                           aria-label="Remover serviço"
+                          onClick={() =>
+                            removeAdditionalServiceFn({
+                              callId: String(id),
+                              serviceId: service.id,
+                            })
+                          }
                         >
                           <TrashIcon className="text-feedback-danger" />
                         </Button>
