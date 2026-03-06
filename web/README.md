@@ -1,73 +1,90 @@
-# React + TypeScript + Vite
+# Help Desk Web
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend em React + Vite + TypeScript. Fornece a interface para gerenciar serviços, criar chamados, gerenciar técnicos.
 
-Currently, two official plugins are available:
+## Funcionalidades
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Autenticação de usuários (login, cadastro, logout)
+- Gerenciamento de técnicos, serviços e clientes
+- Criar, iniciar e encerrar um chamado
 
-## React Compiler
+## Requisitos
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Node.js 22+
+- npm ou outro gerenciador (pnpm/yarn)
 
-## Expanding the ESLint configuration
+## Tecnologias
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- [React](https://react.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [React Query](https://tanstack.com/query/latest)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Estrutura do Projeto
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+web/
+├── public/              # Arquivos estáticos (images, ícones)
+├── src/ 
+│   ├── @types/          # Tipagem global
+│   ├── assets/          # Imagens utilizadas
+│   ├── components/      # Componentes reutilizáveis (Header, Button, etc)
+│   ├── http/            # Funções para requisições HTTP
+│   ├── lib/             # Bibliotecas auxiliares
+│   ├── pages/           # Páginas principais
+│   ├── index.css        # Estilos globais
+│   ├── main.tsx         # Ponto de entrada da aplicação
+│   ├── env.ts           # Validar e expor variáveis ambiente
+│   └── app.tsx          # Componente principal
+├── index.html           # HTML principal
+├── package.json         # Dependências e scripts
+├── vite.config.ts       # Configuração do Vite
+└── tsconfig.json        # Configuração TypeScript
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Configuração
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. Clone o repositório:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```sh
+git clone https://github.com/carlos-hfc/help-desk.git
 ```
+
+2. Instale as dependências:
+
+```sh
+cd web 
+npm install
+```
+
+3. Configure as variáveis ambiente:
+
+```sh
+VITE_API_URL=
+```
+
+## Executando o projeto
+
+1. Inicie o servidor de desenvolvimento:
+
+```sh
+cd web
+npm run dev
+# ou
+turbo dev
+```
+
+2. Acesse [http://localhost:3000](http://localhost:3000) no navegador
+
+## Scripts
+
+- `npm run dev` — servidor em modo desenvolvimento (watch)
+- `npm run build` — gera versão de produção
+- `npm run preview` — visualiza a build de produção localmente
+
+## Contribuição
+Pull requests são bem-vindas! Siga as boas práticas de commit e mantenha o padrão de código.
+
+## Licença
+Está sob a licença MIT.
