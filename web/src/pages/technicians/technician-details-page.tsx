@@ -74,6 +74,7 @@ export function TechnicianDetailsPage() {
               ...variables,
               id: technicianId,
               image: null,
+              hours: variables.hours.sort(),
             },
           ],
         })

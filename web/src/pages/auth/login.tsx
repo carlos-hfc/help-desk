@@ -96,7 +96,7 @@ export function Login() {
           <p className="text-sm text-center">
             Você é técnico e é o seu primeiro acesso?{" "}
             <Link
-              to="/"
+              to="/auth/create-password"
               className="text-blue-base hover:text-blue-dark transition hover:underline underline-offset-2"
             >
               Clique aqui

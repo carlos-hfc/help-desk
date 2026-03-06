@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router"
 
 import { AppLayout } from "@/layouts/app-layout"
 import { AuthLayout } from "@/layouts/auth-layout"
+import { CreatePassword } from "@/pages/auth/create-password"
 import { Login } from "@/pages/auth/login"
 import { SignUp } from "@/pages/auth/sign-up"
 import { Clients } from "@/pages/clients"
@@ -72,6 +73,10 @@ export const routes = createBrowserRouter([
       {
         path: "/auth/sign-up",
         element: <SignUp />,
+      },
+      {
+        path: "/auth/create-password",
+        element: <CreatePassword />,
       },
     ],
   },

@@ -31,7 +31,7 @@ export const getProfile: FastifyPluginAsyncZod = async app => {
     async (request, reply) => {
       const user = await request.getCurrentUser()
 
-      return reply.send({ user })
+      return reply.send({ user: { ...user, hours: user.hours.sort() } })
     },
   )
 }
